@@ -52,7 +52,7 @@ echo "generating sdk"
 #java -jar swagger-codegen-cli.jar swagger-codegen-cli help
 java -jar openapi-generator-cli.jar generate \
     -i $swagger_file \
-    -g csharp \
+    -g csharp-netcore \
     -o $sdk_output_folder \
     -c $config_file \
     -t $gen_root/templates \

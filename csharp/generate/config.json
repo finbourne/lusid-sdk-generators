@@ -1,9 +1,10 @@
 {
   "packageName": "Lusid.Sdk",
   "sourceFolder": ".",
-  "targetFramework": "v5.0",
+  "targetFramework": "netcoreapp2.0",
   "useDateTimeOffset": true,
   "netCoreProjectFile": true,
   "returnICollection": true,
-  "packageVersion": "0.10.713-MM"
+  "packageVersion": "0.10.881",
+  "excludeTests": true
 }
