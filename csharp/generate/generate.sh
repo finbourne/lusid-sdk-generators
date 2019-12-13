@@ -56,7 +56,8 @@ java -jar openapi-generator-cli.jar generate \
     -o $sdk_output_folder \
     -c $config_file \
     -t $gen_root/templates \
-	--type-mappings dateorcutlabel=DateTimeOrCutLabel
+	--type-mappings dateorcutlabel=DateTimeOrCutLabel \
+  --type-mappings double=decimal
 
 rm -rf $sdk_output_folder/.openapi-generator
 rm -f $sdk_output_folder/.openapi-generator-ignore
