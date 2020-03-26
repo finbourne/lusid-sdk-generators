@@ -124,7 +124,8 @@ cp .openapi-generator-ignore output/.openapi-generator-ignore
 mv $sdk_name.json output/$sdk_name.json
 
 # build the sdk
-docker-compose build && docker-compose run lusid-sdk-gen ./generate/generate.sh ./generate ./generate/output $swagger_file $config_file 
+docker-compose build && docker-compose run lusid-sdk-gen ./generate/generate.sh ./generate ./generate/output \
+    $(basename $swagger_file) $(basename $config_file)
 docker-compose rm -f
 
 rm -f docker-compose.yml
