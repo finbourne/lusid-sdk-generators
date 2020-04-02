@@ -5,6 +5,6 @@ RUN apt-get update && apt-get -y install jq && apt-get -y install git
 RUN mkdir -p /usr/src/
 WORKDIR /usr/src/
 
-RUN wget https://oss.sonatype.org/content/repositories/snapshots/org/openapitools/openapi-generator-cli/4.3.0-SNAPSHOT/openapi-generator-cli-4.3.0-20200228.170235-150.jar -O openapi-generator-cli.jar
+RUN wget https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/4.3.0/openapi-generator-cli-4.3.0.jar -O openapi-generator-cli.jar
 
 ENTRYPOINT [ "/bin/bash" ]
