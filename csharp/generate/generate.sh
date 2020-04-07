@@ -58,7 +58,6 @@ java -jar openapi-generator-cli.jar generate \
     -g csharp-netcore \
     -o $sdk_output_folder \
     -c $config_file \
-    -t $gen_root/templates \
 	--type-mappings dateorcutlabel=DateTimeOrCutLabel \
   --type-mappings double=decimal
 
