@@ -7,5 +7,3 @@ test-requirements.txt
 tox.ini
 README.md
 requirements.txt
-setup.cfg
-.gitlab-ci.yml

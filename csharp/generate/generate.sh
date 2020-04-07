@@ -55,14 +55,13 @@ echo "generating sdk"
 #java -jar swagger-codegen-cli.jar swagger-codegen-cli help
 java -jar openapi-generator-cli.jar generate \
     -i $swagger_file \
-    -g csharp-netcore \
+    -g csharp \
     -o $sdk_output_folder \
     -c $config_file \
 	--type-mappings dateorcutlabel=DateTimeOrCutLabel \
   --type-mappings double=decimal
 
-rm -rf $sdk_output_folder/.openapi-generator/
-rm -rf $sdk_output_folder/src/Lusid.Sdk.Test/
+rm -rf $sdk_output_folder/.openapi-generator
 rm -f $sdk_output_folder/.openapi-generator-ignore
 rm -f $sdk_output_folder/.gitignore
 rm -f $sdk_output_folder/git_push.sh
