@@ -32,7 +32,7 @@ ignore_file=$output_folder/$ignore_file_name
 #   remove all previously generated files
 shopt -s extglob 
 echo "removing previous sdk: $sdk_output_folder"
-rm -rf $sdk_output_folder/lusid/!(utilities)
+rm -rf $sdk_output_folder/lusid/!(utilities | tcp)
 shopt -u extglob 
 
 # ignore files
