@@ -157,12 +157,8 @@ public class {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{{#parcela
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
-    }{{#hasVars}}
-    {{classname}} {{classVarName}} = ({{classname}}) o;
-    return {{#vars}}{{#isByteArray}}Arrays{{/isByteArray}}{{^isByteArray}}Objects{{/isByteArray}}.equals(this.{{name}}, {{classVarName}}.{{name}}){{#hasMore}} &&
-        {{/hasMore}}{{/vars}}{{#parent}} &&
-        super.equals(o){{/parent}};{{/hasVars}}{{^hasVars}}
-    return {{#parent}}super.equals(o){{/parent}}{{^parent}}true{{/parent}};{{/hasVars}}
+    }
+    return {{#parent}}super.equals(o){{/parent}}{{^parent}}true{{/parent}};
   {{/useReflectionEqualsHashCode}}
   }
 
@@ -172,7 +168,7 @@ public class {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{{#parcela
     return HashCodeBuilder.reflectionHashCode(this);
   {{/useReflectionEqualsHashCode}}
   {{^useReflectionEqualsHashCode}}
-    return Objects.hash({{#vars}}{{^isByteArray}}{{name}}{{/isByteArray}}{{#isByteArray}}Arrays.hashCode({{name}}){{/isByteArray}}{{#hasMore}}, {{/hasMore}}{{/vars}}{{#parent}}{{#hasVars}}, {{/hasVars}}super.hashCode(){{/parent}});
+    return super.hashCode();
   {{/useReflectionEqualsHashCode}}
   }
 
