@@ -29,10 +29,12 @@ config_file_name=config.json
 config_file=$gen_root/$config_file_name
 ignore_file=$output_folder/$ignore_file_name
 
+app_name=$(cat $config_file | jq -r .packageName)
+
 #   remove all previously generated files
 shopt -s extglob 
 echo "removing previous sdk: $sdk_output_folder"
-rm -rf $sdk_output_folder/lusid/!(utilities|tcp)
+rm -rf $sdk_output_folder/$app_name/!(utilities|tcp)
 shopt -u extglob 
 
 # ignore files
@@ -50,14 +52,15 @@ java -jar openapi-generator-cli.jar generate \
     -g python \
     -o $sdk_output_folder \
     -t $gen_root/templates \
-    -c $config_file   
+    -c $config_file
+
+    # enable the following if a manual override is required
+    # --skip-validate-spec
 
 # create a version file
-cat << EOF > $sdk_output_folder/lusid/__version__.py
+cat << EOF > $sdk_output_folder/$app_name/__version__.py
 __version__ = "$sdk_version"
 EOF
-
-
 
 rm -rf $sdk_output_folder/.openapi-generator/
 rm -rf $sdk_output_folder/test/
