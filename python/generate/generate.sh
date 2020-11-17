@@ -44,6 +44,9 @@ cp $ignore_file $sdk_output_folder
 sdk_version=$(cat $swagger_file | jq -r '.info.version')
 cat $config_file | jq -r --arg SDK_VERSION "$sdk_version" '.packageVersion |= $SDK_VERSION' > temp && mv temp $config_file
 
+# remove the verbose description
+cat $swagger_file | jq -r '.info.description |= "FINBOURNE Technology"' > temp && mv temp $swagger_file
+
 echo "generating sdk version: $sdk_version"
 
 # generate the SDK
