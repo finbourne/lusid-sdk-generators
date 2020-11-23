@@ -1,4 +1,4 @@
-name: Daily build and test (scheduled job)
+name: Daily build and test
 
 on:
   schedule:
