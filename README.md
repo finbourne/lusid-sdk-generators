@@ -1,4 +1,5 @@
 ![LUSID_by_Finbourne](https://content.finbourne.com/LUSID_repo.png)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ffinbourne%2Flusid-sdk-generators.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Ffinbourne%2Flusid-sdk-generators?ref=badge_shield)
 
 This repository contains the generation and publishing logic for each of the LUSID SDKs currently there are SDKs for:
 - Python
@@ -69,3 +70,7 @@ want to ensure the version is set in the appropriate file e.g. package.json, __v
 If you would like to modify the way that the SDK is published you can edit the `publish.sh` files to suit your needs.
 
 These are also used in the pipeline so if you would like to update the way the SDK is published in there you need to commit your changes and raise a merge request.
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Ffinbourne%2Flusid-sdk-generators.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Ffinbourne%2Flusid-sdk-generators?ref=badge_large)
