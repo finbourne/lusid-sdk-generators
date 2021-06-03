@@ -38,6 +38,13 @@ is used by the `build.sh` script.
 
 These are also used in the pipeline so if you would like to update the way the SDK is generated in there you need to commit your changes and raise a merge request.
 
+
+### Templates
+
+For some of the generators we've changed the default templates that they use because they didn't do exactly what we wanted. These templates live in the `<language>/generate/templates directory.
+
+The initial templates that we edited are in the `<language>/generate/default_templates` directory. You can also find all the default templates at https://github.com/OpenAPITools/openapi-generator/tree/master/modules/openapi-generator/src/main/resources. 
+
 ## Publish
 
 If you would like to publish a generated SDK, please do the following:

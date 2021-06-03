@@ -52,7 +52,7 @@ echo "generating sdk version: $sdk_version"
 # generate the SDK
 java -jar openapi-generator-cli.jar generate \
     -i $swagger_file \
-    -g python \
+    -g python-legacy \
     -o $sdk_output_folder \
     -t $gen_root/templates \
     -c $config_file
@@ -67,5 +67,6 @@ EOF
 
 rm -rf $sdk_output_folder/.openapi-generator/
 rm -rf $sdk_output_folder/test/
+rm -f $sdk_output_folder/.gitlab-ci.yml $sdk_output_folder/setup.cfg
 rm -f $sdk_output_folder/.openapi-generator-ignore
 rm -f $output_folder/.openapi-generator-ignore

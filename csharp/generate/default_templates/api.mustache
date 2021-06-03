@@ -411,10 +411,6 @@ namespace {{packageName}}.{{apiPackage}}
             {{/isHttpSignature}}
             {{/authMethods}}
 
-            //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "{{packageVersion}}");
-
             // make the HTTP request
             var localVarResponse = this.Client.{{#lambda.titlecase}}{{#lambda.lowercase}}{{httpMethod}}{{/lambda.lowercase}}{{/lambda.titlecase}}<{{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}Object{{/returnType}}>("{{{path}}}", localVarRequestOptions, this.Configuration);
 
@@ -609,10 +605,6 @@ namespace {{packageName}}.{{apiPackage}}
             }
             {{/isHttpSignature}}
             {{/authMethods}}
-
-            //  set the LUSID header
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Language", "C#");
-            localVarRequestOptions.HeaderParameters.Add("X-LUSID-Sdk-Version", "{{packageVersion}}");
 
             // make the HTTP request
 

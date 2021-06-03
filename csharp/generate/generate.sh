@@ -55,7 +55,7 @@ echo "generating sdk"
 #java -jar swagger-codegen-cli.jar swagger-codegen-cli help
 java -jar openapi-generator-cli.jar generate \
     -i $swagger_file \
-    -g csharp \
+    -g csharp-netcore \
     -o $sdk_output_folder \
     -c $config_file \
     -t $gen_root/templates \
@@ -67,4 +67,5 @@ rm -f $sdk_output_folder/.openapi-generator-ignore
 rm -f $sdk_output_folder/.gitignore
 rm -f $sdk_output_folder/git_push.sh
 rm -f $sdk_output_folder/README.md
+rm -rf $sdk_output_folder/src
 rm -f $output_folder/.openapi-generator-ignore

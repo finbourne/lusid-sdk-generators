@@ -2,7 +2,15 @@
  * {{#description}}{{.}}{{/description}}{{^description}}{{classname}}{{/description}}
  */{{#description}}
 @ApiModel(description = "{{{description}}}"){{/description}}
-{{>generatedAnnotation}}{{#discriminator}}{{>typeInfoAnnotation}}{{/discriminator}}{{>xmlAnnotation}}
+{{#jackson}}
+@JsonPropertyOrder({
+{{#vars}}
+  {{classname}}.JSON_PROPERTY_{{nameInSnakeCase}}{{^-last}},{{/-last}}
+{{/vars}}
+})
+@JsonTypeName("{{name}}")
+{{/jackson}}
+{{>additionalModelTypeAnnotations}}{{>generatedAnnotation}}{{#discriminator}}{{>typeInfoAnnotation}}{{/discriminator}}{{>xmlAnnotation}}
 public class {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{{#vendorExtensions.x-implements}}{{#-first}}implements {{{.}}}{{/-first}}{{^-first}}, {{{.}}}{{/-first}}{{#-last}} {{/-last}}{{/vendorExtensions.x-implements}}{
 {{#serializableModel}}
   private static final long serialVersionUID = 1L;
@@ -74,7 +82,7 @@ public class {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{{#vendorE
   {{/parent}}
   {{#gson}}
   {{#discriminator}}
-    //this.{{{discriminatorName}}} = this.getClass().getSimpleName();
+    this.{{{discriminatorName}}} = this.getClass().getSimpleName();
   {{/discriminator}}
   {{/gson}}
   }
@@ -83,7 +91,7 @@ public class {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{{#vendorE
   {{#gson}}
   {{#discriminator}}
   public {{classname}}() {
-    //this.{{{discriminatorName}}} = this.getClass().getSimpleName();
+    this.{{{discriminatorName}}} = this.getClass().getSimpleName();
   }
   {{/discriminator}}
   {{/gson}}
@@ -92,13 +100,25 @@ public class {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{{#vendorE
 
   {{^isReadOnly}}
   public {{classname}} {{name}}({{{datatypeWithEnum}}} {{name}}) {
-    this.{{name}} = {{name}}; 
+    {{#vendorExtensions.x-is-jackson-optional-nullable}}this.{{name}} = JsonNullable.<{{{datatypeWithEnum}}}>of({{name}});{{/vendorExtensions.x-is-jackson-optional-nullable}}
+    {{^vendorExtensions.x-is-jackson-optional-nullable}}this.{{name}} = {{name}};{{/vendorExtensions.x-is-jackson-optional-nullable}}
     return this;
   }
   {{#isArray}}
 
   public {{classname}} add{{nameInCamelCase}}Item({{{items.datatypeWithEnum}}} {{name}}Item) {
-   
+    {{#vendorExtensions.x-is-jackson-optional-nullable}}
+    if (this.{{name}} == null || !this.{{name}}.isPresent()) {
+      this.{{name}} = JsonNullable.<{{{datatypeWithEnum}}}>of({{{defaultValue}}});
+    }
+    try {
+      this.{{name}}.get().add({{name}}Item);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
+    return this;
+    {{/vendorExtensions.x-is-jackson-optional-nullable}}
+    {{^vendorExtensions.x-is-jackson-optional-nullable}}
     {{^required}}
     if (this.{{name}} == null) {
       this.{{name}} = {{{defaultValue}}};
@@ -106,11 +126,24 @@ public class {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{{#vendorE
     {{/required}}
     this.{{name}}.add({{name}}Item);
     return this;
+    {{/vendorExtensions.x-is-jackson-optional-nullable}}
   }
   {{/isArray}}
   {{#isMap}}
 
   public {{classname}} put{{nameInCamelCase}}Item(String key, {{{items.datatypeWithEnum}}} {{name}}Item) {
+    {{#vendorExtensions.x-is-jackson-optional-nullable}}
+    if (this.{{name}} == null || !this.{{name}}.isPresent()) {
+      this.{{name}} = JsonNullable.<{{{datatypeWithEnum}}}>of({{{defaultValue}}});
+    }
+    try {
+      this.{{name}}.get().put(key, {{name}}Item);
+    } catch (java.util.NoSuchElementException e) {
+      // this can never happen, as we make sure above that the value is present
+    }
+    return this;
+    {{/vendorExtensions.x-is-jackson-optional-nullable}}
+    {{^vendorExtensions.x-is-jackson-optional-nullable}}
     {{^required}}
     if (this.{{name}} == null) {
       this.{{name}} = {{{defaultValue}}};
@@ -118,6 +151,7 @@ public class {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{{#vendorE
     {{/required}}
     this.{{name}}.put(key, {{name}}Item);
     return this;
+    {{/vendorExtensions.x-is-jackson-optional-nullable}}
   }
   {{/isMap}}
 
@@ -137,6 +171,14 @@ public class {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{{#vendorE
   {{/maximum}}
    * @return {{name}}
   **/
+{{#required}}
+{{#isNullable}}
+  @javax.annotation.Nullable
+{{/isNullable}}
+{{/required}}
+{{^required}}
+  @javax.annotation.Nullable
+{{/required}}
 {{#jsonb}}
   @JsonbProperty("{{baseName}}")
 {{/jsonb}}
@@ -144,9 +186,25 @@ public class {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{{#vendorE
 {{#vendorExtensions.x-extra-annotation}}
   {{{vendorExtensions.x-extra-annotation}}}
 {{/vendorExtensions.x-extra-annotation}}
+{{#vendorExtensions.x-is-jackson-optional-nullable}}
+  {{!unannotated, Jackson would pick this up automatically and add it *in addition* to the _JsonNullable getter field}}
+  @JsonIgnore
+{{/vendorExtensions.x-is-jackson-optional-nullable}}
+{{^vendorExtensions.x-is-jackson-optional-nullable}}{{#jackson}}{{> jackson_annotations}}{{/jackson}}{{/vendorExtensions.x-is-jackson-optional-nullable}}
   public {{{datatypeWithEnum}}} {{getter}}() {
+    {{#vendorExtensions.x-is-jackson-optional-nullable}}
+    {{#isReadOnly}}{{! A readonly attribute doesn't have setter => jackson will set null directly if explicitly returned by API, so make sure we have an empty JsonNullable}}
+    if ({{name}} == null) {
+      {{name}} = JsonNullable.<{{{datatypeWithEnum}}}>{{#defaultValue}}of({{{.}}}){{/defaultValue}}{{^defaultValue}}undefined(){{/defaultValue}};
+    }
+    {{/isReadOnly}}
+    return {{name}}.orElse(null);
+    {{/vendorExtensions.x-is-jackson-optional-nullable}}
+    {{^vendorExtensions.x-is-jackson-optional-nullable}}
     return {{name}};
+    {{/vendorExtensions.x-is-jackson-optional-nullable}}
   }
+
   {{#vendorExtensions.x-is-jackson-optional-nullable}}
 {{> jackson_annotations}}
   public JsonNullable<{{{datatypeWithEnum}}}> {{getter}}_JsonNullable() {
@@ -176,7 +234,7 @@ public class {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{{#vendorE
   @Override
   public boolean equals(Object o) {
   {{#useReflectionEqualsHashCode}}
-    return EqualsBuilder.reflectionEquals(this, o);
+    return EqualsBuilder.reflectionEquals(this, o, false, null, true);
   {{/useReflectionEqualsHashCode}}
   {{^useReflectionEqualsHashCode}}
     if (this == o) {
@@ -184,8 +242,12 @@ public class {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{{#vendorE
     }
     if (o == null || getClass() != o.getClass()) {
       return false;
-    }
-    return {{#parent}}super.equals(o){{/parent}}{{^parent}}true{{/parent}};
+    }{{#hasVars}}
+    {{classname}} {{classVarName}} = ({{classname}}) o;
+    return {{#vars}}{{#isByteArray}}Arrays{{/isByteArray}}{{^isByteArray}}Objects{{/isByteArray}}.equals(this.{{name}}, {{classVarName}}.{{name}}){{^-last}} &&
+        {{/-last}}{{/vars}}{{#parent}} &&
+        super.equals(o){{/parent}};{{/hasVars}}{{^hasVars}}
+    return {{#parent}}super.equals(o){{/parent}}{{^parent}}true{{/parent}};{{/hasVars}}
   {{/useReflectionEqualsHashCode}}
   }
 
@@ -195,7 +257,7 @@ public class {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{{#vendorE
     return HashCodeBuilder.reflectionHashCode(this);
   {{/useReflectionEqualsHashCode}}
   {{^useReflectionEqualsHashCode}}
-    return super.hashCode();  
+    return Objects.hash({{#vars}}{{^isByteArray}}{{name}}{{/isByteArray}}{{#isByteArray}}Arrays.hashCode({{name}}){{/isByteArray}}{{^-last}}, {{/-last}}{{/vars}}{{#parent}}{{#hasVars}}, {{/hasVars}}super.hashCode(){{/parent}});
   {{/useReflectionEqualsHashCode}}
   }
 
