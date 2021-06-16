@@ -1,0 +1,3093 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "FINBOURNE Notifications API",
+    "termsOfService": "https://www.finbourne.com/legal/terms-conditions",
+    "contact": {
+      "name": "FINBOURNE Technology",
+      "url": "https://www.finbourne.com",
+      "email": "info@finbourne.com"
+    },
+    "version": "0.1.138",
+    "x-logo": {
+      "url": "https://content.finbourne.com/LUSID-header.png",
+      "backgroundColor": "#415464"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://fbn-ci.lusid.com/notifications"
+    }
+  ],
+  "paths": {
+    "/api/events": {
+      "post": {
+        "tags": [
+          "Events"
+        ],
+        "summary": "[EXPERIMENTAL] Create a new event.",
+        "operationId": "CreateEvent",
+        "requestBody": {
+          "description": "The data to create an event.",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "description": "The data to create an event."
+              },
+              "example": {
+  "EventType": "Manual",
+  "Id": "acb5722d-341a-4802-b9fd-cf740a6a7797",
+  "Message": "TestMessage",
+  "Details": "TestDetails",
+  "EventTime": "2021-08-27T17:39:02.9427036+01:00"
+}
+            },
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "description": "The data to create an event."
+              },
+              "example": {
+  "EventType": "Manual",
+  "Id": "acb5722d-341a-4802-b9fd-cf740a6a7797",
+  "Message": "TestMessage",
+  "Details": "TestDetails",
+  "EventTime": "2021-08-27T17:39:02.9427036+01:00"
+}
+            },
+            "text/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "description": "The data to create an event."
+              },
+              "example": {
+  "EventType": "Manual",
+  "Id": "acb5722d-341a-4802-b9fd-cf740a6a7797",
+  "Message": "TestMessage",
+  "Details": "TestDetails",
+  "EventTime": "2021-08-27T17:39:02.9427036+01:00"
+}
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "description": "The data to create an event."
+              },
+              "example": {
+  "EventType": "Manual",
+  "Id": "acb5722d-341a-4802-b9fd-cf740a6a7797",
+  "Message": "TestMessage",
+  "Details": "TestDetails",
+  "EventTime": "2021-08-27T17:39:02.9427036+01:00"
+}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoContent"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The details of the input related failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      }
+    },
+    "/api/eventtypes": {
+      "get": {
+        "tags": [
+          "EventTypes"
+        ],
+        "summary": "[EXPERIMENTAL] Lists all of the available event types.",
+        "operationId": "ListEventTypes",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceListOfEventTypeSchema"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No event types found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      }
+    },
+    "/api/eventtypes/{eventType}": {
+      "get": {
+        "tags": [
+          "EventTypes"
+        ],
+        "summary": "[EXPERIMENTAL] Gets the specified event type schema.",
+        "operationId": "GetEventType",
+        "parameters": [
+          {
+            "name": "eventType",
+            "in": "path",
+            "description": "The event type",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "The event type"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventTypeSchema"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The details of the input related failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No event type exists with the specified type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      }
+    },
+    "/api/subscriptions": {
+      "get": {
+        "tags": [
+          "Subscriptions"
+        ],
+        "summary": "[EXPERIMENTAL] List subscriptions.",
+        "operationId": "ListSubscriptions",
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "query",
+            "description": "Expression to filter the result set. Read more about <see href=\"https://support.lusid.com/filtering-results-from-lusid\"> filtering results from LUSID</see>.",
+            "schema": {
+              "maxLength": 2147483647,
+              "minLength": 0,
+              "pattern": "^[\\s\\S]*$",
+              "type": "string",
+              "description": "Expression to filter the result set. Read more about <see href=\"https://support.lusid.com/filtering-results-from-lusid\"> filtering results from LUSID</see>.",
+              "nullable": true
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "description": "Fields to order the result set. Read more about <see href=\"https://support.lusid.com/filtering-results-from-lusid\"> filtering results from LUSID</see>.",
+            "schema": {
+              "maxLength": 2147483647,
+              "minLength": 1,
+              "pattern": "^[\\s\\S]*$",
+              "type": "string",
+              "description": "Fields to order the result set. Read more about <see href=\"https://support.lusid.com/filtering-results-from-lusid\"> filtering results from LUSID</see>.",
+              "nullable": true
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Encoded page string returned from a previous search result that will retrieve the next page of data. When this field is supplied the filter  field should not be supplied.",
+            "schema": {
+              "maxLength": 500,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\+/]*={0,3}$",
+              "type": "string",
+              "description": "Encoded page string returned from a previous search result that will retrieve the next page of data. When this field is supplied the filter  field should not be supplied.",
+              "nullable": true
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The maximum number of subscriptions to retrieve.",
+            "schema": {
+              "maximum": 5000,
+              "minimum": 1,
+              "type": "integer",
+              "description": "The maximum number of subscriptions to retrieve.",
+              "format": "int32",
+              "nullable": true
+            },
+            "x-nullable": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceListOfSubscription"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The details of the input related failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No subscriptions exists with the provided filter(s)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      },
+      "post": {
+        "tags": [
+          "Subscriptions"
+        ],
+        "summary": "[EXPERIMENTAL] Create a new subscription.",
+        "operationId": "CreateSubscription",
+        "requestBody": {
+          "description": "The data to create a subscription",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSubscription"
+              },
+              "example": {
+  "id": {
+    "scope": "TestScope",
+    "code": "TestCode"
+  },
+  "displayName": "TestDisplayName",
+  "description": "TestDescription",
+  "status": "Active",
+  "matchingPattern": {
+    "eventType": "Manual",
+    "filter": "Message eq 'TestMessage'"
+  }
+}
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSubscription"
+              },
+              "example": {
+  "id": {
+    "scope": "TestScope",
+    "code": "TestCode"
+  },
+  "displayName": "TestDisplayName",
+  "description": "TestDescription",
+  "status": "Active",
+  "matchingPattern": {
+    "eventType": "Manual",
+    "filter": "Message eq 'TestMessage'"
+  }
+}
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSubscription"
+              },
+              "example": {
+  "id": {
+    "scope": "TestScope",
+    "code": "TestCode"
+  },
+  "displayName": "TestDisplayName",
+  "description": "TestDescription",
+  "status": "Active",
+  "matchingPattern": {
+    "eventType": "Manual",
+    "filter": "Message eq 'TestMessage'"
+  }
+}
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSubscription"
+              },
+              "example": {
+  "id": {
+    "scope": "TestScope",
+    "code": "TestCode"
+  },
+  "displayName": "TestDisplayName",
+  "description": "TestDescription",
+  "status": "Active",
+  "matchingPattern": {
+    "eventType": "Manual",
+    "filter": "Message eq 'TestMessage'"
+  }
+}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subscription"
+                },
+                "example": {
+  "id": {
+    "scope": "TestScope",
+    "code": "TestCode"
+  },
+  "displayName": "TestDisplayName",
+  "description": "TestDescription",
+  "status": "Active",
+  "matchingPattern": {
+    "eventType": "Manual",
+    "filter": "Entity eq 'Portfolio'"
+  },
+  "createdAt": "0001-01-01T00:00:00.0000000+00:00",
+  "createdBy": "TestClient",
+  "lastModifiedAt": "0001-01-01T00:00:00.0000000+00:00",
+  "lastModifiedBy": "TestClient"
+}
+              }
+            }
+          },
+          "400": {
+            "description": "The details of the input related failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      }
+    },
+    "/api/subscriptions/{scope}/{code}": {
+      "get": {
+        "tags": [
+          "Subscriptions"
+        ],
+        "summary": "[EXPERIMENTAL] Get a subscription.",
+        "operationId": "GetSubscription",
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "path",
+            "description": "The scope that identifies a subscription",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The scope that identifies a subscription"
+            }
+          },
+          {
+            "name": "code",
+            "in": "path",
+            "description": "The code that identifies a subscription",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The code that identifies a subscription"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubscriptionDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The details of the input related failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No subscription exists in current scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      },
+      "put": {
+        "tags": [
+          "Subscriptions"
+        ],
+        "summary": "[EXPERIMENTAL] Update an existing subscription.",
+        "operationId": "UpdateSubscription",
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "path",
+            "description": "The scope that identifies a subscription",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The scope that identifies a subscription"
+            }
+          },
+          {
+            "name": "code",
+            "in": "path",
+            "description": "The code that identifies a subscription",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The code that identifies a subscription"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The data to update a subscription",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubscription"
+              },
+              "example": {
+  "displayName": "TestDisplayName",
+  "description": "TestDescription",
+  "status": "Active",
+  "matchingPattern": {
+    "eventType": "Manual",
+    "filter": "Message eq 'TestMessage'"
+  }
+}
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubscription"
+              },
+              "example": {
+  "displayName": "TestDisplayName",
+  "description": "TestDescription",
+  "status": "Active",
+  "matchingPattern": {
+    "eventType": "Manual",
+    "filter": "Message eq 'TestMessage'"
+  }
+}
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubscription"
+              },
+              "example": {
+  "displayName": "TestDisplayName",
+  "description": "TestDescription",
+  "status": "Active",
+  "matchingPattern": {
+    "eventType": "Manual",
+    "filter": "Message eq 'TestMessage'"
+  }
+}
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubscription"
+              },
+              "example": {
+  "displayName": "TestDisplayName",
+  "description": "TestDescription",
+  "status": "Active",
+  "matchingPattern": {
+    "eventType": "Manual",
+    "filter": "Message eq 'TestMessage'"
+  }
+}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Subscription"
+                },
+                "example": {
+  "id": {
+    "scope": "TestScope",
+    "code": "TestCode"
+  },
+  "displayName": "TestDisplayName",
+  "description": "TestDescription",
+  "status": "Active",
+  "matchingPattern": {
+    "eventType": "Manual",
+    "filter": "Entity eq 'Portfolio'"
+  },
+  "createdAt": "0001-01-01T00:00:00.0000000+00:00",
+  "createdBy": "TestClient",
+  "lastModifiedAt": "0001-01-01T00:00:00.0000000+00:00",
+  "lastModifiedBy": "TestClient"
+}
+              }
+            }
+          },
+          "400": {
+            "description": "The details of the input related failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No subscription exists in current scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      },
+      "delete": {
+        "tags": [
+          "Subscriptions"
+        ],
+        "summary": "[EXPERIMENTAL] Delete a subscription.",
+        "operationId": "DeleteSubscription",
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "path",
+            "description": "The scope that identifies a subscription",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The scope that identifies a subscription"
+            }
+          },
+          {
+            "name": "code",
+            "in": "path",
+            "description": "The code that identifies a subscription",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The code that identifies a subscription"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "The details of the input related failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No subscription exists in current scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      }
+    },
+    "/api/subscriptions/{scope}/{code}/notifications": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "[EXPERIMENTAL] List all notifications on a subscription.",
+        "operationId": "ListNotifications",
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "path",
+            "description": "The scope that identifies a subscription",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The scope that identifies a subscription"
+            }
+          },
+          {
+            "name": "code",
+            "in": "path",
+            "description": "The code that identifies a subscription",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The code that identifies a subscription"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceListOfNotification"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The details of the input related failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No notifications exists with the provided filter(s)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      }
+    },
+    "/api/subscriptions/{scope}/{code}/notifications/apirequest": {
+      "post": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "[EXPERIMENTAL] Add an Api Request notification to a subscription.",
+        "operationId": "CreateApiRequestNotification",
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "path",
+            "description": "The scope that identifies a notification",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The scope that identifies a notification"
+            }
+          },
+          {
+            "name": "code",
+            "in": "path",
+            "description": "The code that identifies a notification",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The code that identifies a notification"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The data to create a api request notification",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateApiRequestNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "httpMethod": "Post",
+  "pathAndQuery": "notification/api/{{id}}/path?examplequery={{id}}",
+  "content": {
+    "Key": "Value Example",
+    "MessageKey": "{{message}}"
+  }
+}
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateApiRequestNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "httpMethod": "Post",
+  "pathAndQuery": "notification/api/{{id}}/path?examplequery={{id}}",
+  "content": {
+    "Key": "Value Example",
+    "MessageKey": "{{message}}"
+  }
+}
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateApiRequestNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "httpMethod": "Post",
+  "pathAndQuery": "notification/api/{{id}}/path?examplequery={{id}}",
+  "content": {
+    "Key": "Value Example",
+    "MessageKey": "{{message}}"
+  }
+}
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateApiRequestNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "httpMethod": "Post",
+  "pathAndQuery": "notification/api/{{id}}/path?examplequery={{id}}",
+  "content": {
+    "Key": "Value Example",
+    "MessageKey": "{{message}}"
+  }
+}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Notification"
+                },
+                "example": {
+  "id": "TestId",
+  "description": "TestDescription",
+  "deliveryChannel": "Email",
+  "recipients": {
+    "to": "dummyEmail"
+  },
+  "content": {
+    "subject": "dummySubject",
+    "body": "dummyBody"
+  },
+  "status": {
+    "result": "Sent",
+    "lastUpdated": "0001-01-01T00:00:00.0000000+00:00"
+  },
+  "createdAt": "0001-01-01T00:00:00.0000000+00:00",
+  "createdBy": "TestClient",
+  "lastModifiedAt": "0001-01-01T00:00:00.0000000+00:00",
+  "lastModifiedBy": "TestClient"
+}
+              }
+            }
+          },
+          "400": {
+            "description": "The details of the input related failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      }
+    },
+    "/api/subscriptions/{scope}/{code}/notifications/apirequest/{id}": {
+      "put": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "[EXPERIMENTAL] Update an api request notification for a given subscription.",
+        "operationId": "UpdateApiRequestNotification",
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "path",
+            "description": "The scope that identifies a notification",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The scope that identifies a notification"
+            }
+          },
+          {
+            "name": "code",
+            "in": "path",
+            "description": "The code that identifies a notification",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The code that identifies a notification"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of the notification",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The unique identifier of the notification",
+              "nullable": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The data to update a notification",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateApiRequestNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "httpMethod": "Post",
+  "pathAndQuery": "notification/api/{{id}}/path?examplequery={{id}}",
+  "content": {
+    "Key": "Value Example",
+    "MessageKey": "{{message}}"
+  }
+}
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateApiRequestNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "httpMethod": "Post",
+  "pathAndQuery": "notification/api/{{id}}/path?examplequery={{id}}",
+  "content": {
+    "Key": "Value Example",
+    "MessageKey": "{{message}}"
+  }
+}
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateApiRequestNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "httpMethod": "Post",
+  "pathAndQuery": "notification/api/{{id}}/path?examplequery={{id}}",
+  "content": {
+    "Key": "Value Example",
+    "MessageKey": "{{message}}"
+  }
+}
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateApiRequestNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "httpMethod": "Post",
+  "pathAndQuery": "notification/api/{{id}}/path?examplequery={{id}}",
+  "content": {
+    "Key": "Value Example",
+    "MessageKey": "{{message}}"
+  }
+}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Notification"
+                },
+                "example": {
+  "id": "TestId",
+  "description": "TestDescription",
+  "deliveryChannel": "Email",
+  "recipients": {
+    "to": "dummyEmail"
+  },
+  "content": {
+    "subject": "dummySubject",
+    "body": "dummyBody"
+  },
+  "status": {
+    "result": "Sent",
+    "lastUpdated": "0001-01-01T00:00:00.0000000+00:00"
+  },
+  "createdAt": "0001-01-01T00:00:00.0000000+00:00",
+  "createdBy": "TestClient",
+  "lastModifiedAt": "0001-01-01T00:00:00.0000000+00:00",
+  "lastModifiedBy": "TestClient"
+}
+              }
+            }
+          },
+          "400": {
+            "description": "The details of the input related failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No notification exists in current scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      }
+    },
+    "/api/subscriptions/{scope}/{code}/notifications/email": {
+      "post": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "[EXPERIMENTAL] Add an email notification to a subscription.",
+        "operationId": "CreateEmailNotification",
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "path",
+            "description": "The scope that identifies a notification",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The scope that identifies a notification"
+            }
+          },
+          {
+            "name": "code",
+            "in": "path",
+            "description": "The code that identifies a notification",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The code that identifies a notification"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The data to create a email notification",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEmailNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "subject": "Event with id of {{id}}",
+  "body": "Event with message {{message}} and details {{details}}",
+  "emailAddressTo": [
+    "recipient@finbourne.com"
+  ],
+  "emailAddressCc": [
+    "recipientcc@finbourne.com"
+  ],
+  "emailAddressBcc": [
+    "recipientbcc@finbourne.com"
+  ]
+}
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEmailNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "subject": "Event with id of {{id}}",
+  "body": "Event with message {{message}} and details {{details}}",
+  "emailAddressTo": [
+    "recipient@finbourne.com"
+  ],
+  "emailAddressCc": [
+    "recipientcc@finbourne.com"
+  ],
+  "emailAddressBcc": [
+    "recipientbcc@finbourne.com"
+  ]
+}
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEmailNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "subject": "Event with id of {{id}}",
+  "body": "Event with message {{message}} and details {{details}}",
+  "emailAddressTo": [
+    "recipient@finbourne.com"
+  ],
+  "emailAddressCc": [
+    "recipientcc@finbourne.com"
+  ],
+  "emailAddressBcc": [
+    "recipientbcc@finbourne.com"
+  ]
+}
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEmailNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "subject": "Event with id of {{id}}",
+  "body": "Event with message {{message}} and details {{details}}",
+  "emailAddressTo": [
+    "recipient@finbourne.com"
+  ],
+  "emailAddressCc": [
+    "recipientcc@finbourne.com"
+  ],
+  "emailAddressBcc": [
+    "recipientbcc@finbourne.com"
+  ]
+}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Notification"
+                },
+                "example": {
+  "id": "TestId",
+  "description": "TestDescription",
+  "deliveryChannel": "Email",
+  "recipients": {
+    "to": "dummyEmail"
+  },
+  "content": {
+    "subject": "dummySubject",
+    "body": "dummyBody"
+  },
+  "status": {
+    "result": "Sent",
+    "lastUpdated": "0001-01-01T00:00:00.0000000+00:00"
+  },
+  "createdAt": "0001-01-01T00:00:00.0000000+00:00",
+  "createdBy": "TestClient",
+  "lastModifiedAt": "0001-01-01T00:00:00.0000000+00:00",
+  "lastModifiedBy": "TestClient"
+}
+              }
+            }
+          },
+          "400": {
+            "description": "The details of the input related failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      }
+    },
+    "/api/subscriptions/{scope}/{code}/notifications/email/{id}": {
+      "put": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "[EXPERIMENTAL] Update an email notification for a given subscription.",
+        "operationId": "UpdateEmailNotification",
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "path",
+            "description": "The scope that identifies a subscription",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The scope that identifies a subscription"
+            }
+          },
+          {
+            "name": "code",
+            "in": "path",
+            "description": "The code that identifies a subscription",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The code that identifies a subscription"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of the notification",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The unique identifier of the notification",
+              "nullable": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The data to update a notification",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEmailNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "subject": "Event with id of {{id}}",
+  "body": "Event with message {{message}} and details {{details}}",
+  "emailAddressTo": [
+    "recipient@finbourne.com"
+  ],
+  "emailAddressCc": [
+    "recipientcc@finbourne.com"
+  ],
+  "emailAddressBcc": [
+    "recipientbcc@finbourne.com"
+  ]
+}
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEmailNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "subject": "Event with id of {{id}}",
+  "body": "Event with message {{message}} and details {{details}}",
+  "emailAddressTo": [
+    "recipient@finbourne.com"
+  ],
+  "emailAddressCc": [
+    "recipientcc@finbourne.com"
+  ],
+  "emailAddressBcc": [
+    "recipientbcc@finbourne.com"
+  ]
+}
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEmailNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "subject": "Event with id of {{id}}",
+  "body": "Event with message {{message}} and details {{details}}",
+  "emailAddressTo": [
+    "recipient@finbourne.com"
+  ],
+  "emailAddressCc": [
+    "recipientcc@finbourne.com"
+  ],
+  "emailAddressBcc": [
+    "recipientbcc@finbourne.com"
+  ]
+}
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEmailNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "subject": "Event with id of {{id}}",
+  "body": "Event with message {{message}} and details {{details}}",
+  "emailAddressTo": [
+    "recipient@finbourne.com"
+  ],
+  "emailAddressCc": [
+    "recipientcc@finbourne.com"
+  ],
+  "emailAddressBcc": [
+    "recipientbcc@finbourne.com"
+  ]
+}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Notification"
+                },
+                "example": {
+  "id": "TestId",
+  "description": "TestDescription",
+  "deliveryChannel": "Email",
+  "recipients": {
+    "to": "dummyEmail"
+  },
+  "content": {
+    "subject": "dummySubject",
+    "body": "dummyBody"
+  },
+  "status": {
+    "result": "Sent",
+    "lastUpdated": "0001-01-01T00:00:00.0000000+00:00"
+  },
+  "createdAt": "0001-01-01T00:00:00.0000000+00:00",
+  "createdBy": "TestClient",
+  "lastModifiedAt": "0001-01-01T00:00:00.0000000+00:00",
+  "lastModifiedBy": "TestClient"
+}
+              }
+            }
+          },
+          "400": {
+            "description": "The details of the input related failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No notification exists in current scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      }
+    },
+    "/api/subscriptions/{scope}/{code}/notifications/sms": {
+      "post": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "[EXPERIMENTAL] Add an SMS notification to a subscription.",
+        "operationId": "CreateSmsNotification",
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "path",
+            "description": "The scope that identifies a notification",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The scope that identifies a notification"
+            }
+          },
+          {
+            "name": "code",
+            "in": "path",
+            "description": "The code that identifies a notification",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The code that identifies a notification"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The data to create an SMS notification",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSmsNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "body": "Event with message {{message}} and details {{details}}",
+  "recipients": [
+    "+447000000000"
+  ]
+}
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSmsNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "body": "Event with message {{message}} and details {{details}}",
+  "recipients": [
+    "+447000000000"
+  ]
+}
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSmsNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "body": "Event with message {{message}} and details {{details}}",
+  "recipients": [
+    "+447000000000"
+  ]
+}
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSmsNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "body": "Event with message {{message}} and details {{details}}",
+  "recipients": [
+    "+447000000000"
+  ]
+}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Notification"
+                },
+                "example": {
+  "id": "TestId",
+  "description": "TestDescription",
+  "deliveryChannel": "Email",
+  "recipients": {
+    "to": "dummyEmail"
+  },
+  "content": {
+    "subject": "dummySubject",
+    "body": "dummyBody"
+  },
+  "status": {
+    "result": "Sent",
+    "lastUpdated": "0001-01-01T00:00:00.0000000+00:00"
+  },
+  "createdAt": "0001-01-01T00:00:00.0000000+00:00",
+  "createdBy": "TestClient",
+  "lastModifiedAt": "0001-01-01T00:00:00.0000000+00:00",
+  "lastModifiedBy": "TestClient"
+}
+              }
+            }
+          },
+          "400": {
+            "description": "The details of the input related failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      }
+    },
+    "/api/subscriptions/{scope}/{code}/notifications/sms/{id}": {
+      "put": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "[EXPERIMENTAL] Update an SMS notification for a given subscription.",
+        "operationId": "UpdateSmsNotification",
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "path",
+            "description": "The scope that identifies a subscription",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The scope that identifies a subscription"
+            }
+          },
+          {
+            "name": "code",
+            "in": "path",
+            "description": "The code that identifies a subscription",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The code that identifies a subscription"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of the notification",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The unique identifier of the notification",
+              "nullable": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The data to update a notification",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSmsNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "body": "Event with message {{message}} and details {{details}}",
+  "recipients": [
+    "+447000000000"
+  ]
+}
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSmsNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "body": "Event with message {{message}} and details {{details}}",
+  "recipients": [
+    "+447000000000"
+  ]
+}
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSmsNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "body": "Event with message {{message}} and details {{details}}",
+  "recipients": [
+    "+447000000000"
+  ]
+}
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSmsNotification"
+              },
+              "example": {
+  "description": "TestDescription",
+  "body": "Event with message {{message}} and details {{details}}",
+  "recipients": [
+    "+447000000000"
+  ]
+}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Notification"
+                },
+                "example": {
+  "id": "TestId",
+  "description": "TestDescription",
+  "deliveryChannel": "Email",
+  "recipients": {
+    "to": "dummyEmail"
+  },
+  "content": {
+    "subject": "dummySubject",
+    "body": "dummyBody"
+  },
+  "status": {
+    "result": "Sent",
+    "lastUpdated": "0001-01-01T00:00:00.0000000+00:00"
+  },
+  "createdAt": "0001-01-01T00:00:00.0000000+00:00",
+  "createdBy": "TestClient",
+  "lastModifiedAt": "0001-01-01T00:00:00.0000000+00:00",
+  "lastModifiedBy": "TestClient"
+}
+              }
+            }
+          },
+          "400": {
+            "description": "The details of the input related failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No notification exists in current scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      }
+    },
+    "/api/subscriptions/{scope}/{code}/notifications/{id}": {
+      "get": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "[EXPERIMENTAL] Get a notification on a subscription.",
+        "operationId": "GetNotification",
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "path",
+            "description": "The scope that identifies a subscription",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The scope that identifies a subscription"
+            }
+          },
+          {
+            "name": "code",
+            "in": "path",
+            "description": "The code that identifies a subscription",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The code that identifies a subscription"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of the notification",
+            "required": true,
+            "schema": {
+              "maxLength": 40,
+              "minLength": 30,
+              "pattern": "^[a-zA-Z0-9\\-]+$",
+              "type": "string",
+              "description": "The unique identifier of the notification",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Notification"
+                },
+                "example": {
+  "id": "TestId",
+  "description": "TestDescription",
+  "deliveryChannel": "Email",
+  "recipients": {
+    "to": "dummyEmail"
+  },
+  "content": {
+    "subject": "dummySubject",
+    "body": "dummyBody"
+  },
+  "status": {
+    "result": "Sent",
+    "lastUpdated": "0001-01-01T00:00:00.0000000+00:00"
+  },
+  "createdAt": "0001-01-01T00:00:00.0000000+00:00",
+  "createdBy": "TestClient",
+  "lastModifiedAt": "0001-01-01T00:00:00.0000000+00:00",
+  "lastModifiedBy": "TestClient"
+}
+              }
+            }
+          },
+          "400": {
+            "description": "The details of the input related failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No notification exists in current scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      },
+      "delete": {
+        "tags": [
+          "Notifications"
+        ],
+        "summary": "[EXPERIMENTAL] Delete a notification for a given subscription.",
+        "operationId": "DeleteNotification",
+        "parameters": [
+          {
+            "name": "scope",
+            "in": "path",
+            "description": "The scope that identifies a subscription",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The scope that identifies a subscription"
+            }
+          },
+          {
+            "name": "code",
+            "in": "path",
+            "description": "The code that identifies a subscription",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The code that identifies a subscription"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The unique identifier of the notification",
+            "required": true,
+            "schema": {
+              "maxLength": 64,
+              "minLength": 1,
+              "pattern": "^[a-zA-Z0-9\\-_]+$",
+              "type": "string",
+              "description": "The unique identifier of the notification",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "The details of the input related failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No notification exists in current scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Code": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateApiRequestNotification": {
+        "required": [
+          "description",
+          "httpMethod",
+          "pathAndQuery"
+        ],
+        "type": "object",
+        "properties": {
+          "description": {
+            "maxLength": 512,
+            "minLength": 1,
+            "pattern": "^[\\s\\S]*$",
+            "type": "string",
+            "description": "The summary of the services provided by the notification"
+          },
+          "httpMethod": {
+            "type": "string",
+            "description": "The HTTP method such as GET, POST, etc. to use on the Api Request"
+          },
+          "pathAndQuery": {
+            "maxLength": 2147483647,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9-._~:\\/?#[\\]@!$&'()*+,;%=]*$",
+            "type": "string",
+            "description": "The url to send the request to."
+          },
+          "content": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "The content of the request",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The information required to create a notification which, when processed, will send a HTTP request"
+      },
+      "CreateEmailNotification": {
+        "required": [
+          "body",
+          "description",
+          "emailAddressTo",
+          "subject"
+        ],
+        "type": "object",
+        "properties": {
+          "description": {
+            "maxLength": 512,
+            "minLength": 1,
+            "pattern": "^[\\s\\S]*$",
+            "type": "string",
+            "description": "The summary of the services provided by the notification"
+          },
+          "subject": {
+            "maxLength": 1024,
+            "minLength": 1,
+            "pattern": "^[\\s\\S]*$",
+            "type": "string",
+            "description": "The subject of the email"
+          },
+          "body": {
+            "maxLength": 2147483647,
+            "minLength": 1,
+            "pattern": "^[\\s\\S]*$",
+            "type": "string",
+            "description": "The body of the email"
+          },
+          "emailAddressTo": {
+            "maxLength": 10,
+            "minLength": 1,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "'To' recipients of the email"
+          },
+          "emailAddressCc": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "'Cc' recipients of the email",
+            "nullable": true
+          },
+          "emailAddressBcc": {
+            "maxLength": 10,
+            "minLength": 0,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "'Bcc' recipients of the email",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The information required to create a notification which, when processed, will send an email"
+      },
+      "CreateSmsNotification": {
+        "required": [
+          "body",
+          "description",
+          "recipients"
+        ],
+        "type": "object",
+        "properties": {
+          "description": {
+            "maxLength": 512,
+            "minLength": 1,
+            "pattern": "^[\\s\\S]*$",
+            "type": "string",
+            "description": "The summary of the services provided by the notification"
+          },
+          "body": {
+            "maxLength": 1024,
+            "minLength": 1,
+            "pattern": "^[\\s\\S]*$",
+            "type": "string",
+            "description": "The body of the SMS"
+          },
+          "recipients": {
+            "maxLength": 10,
+            "minLength": 1,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The phone numbers to which the SMS will be sent to (E.164 format)"
+          }
+        },
+        "additionalProperties": false,
+        "description": "The information required to create a notification which, when processed, will send an SMS"
+      },
+      "CreateSubscription": {
+        "required": [
+          "description",
+          "displayName",
+          "id",
+          "matchingPattern",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ResourceId"
+          },
+          "displayName": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[\\s\\S]*$",
+            "type": "string",
+            "description": "The name of the subscription"
+          },
+          "description": {
+            "maxLength": 512,
+            "minLength": 1,
+            "pattern": "^[\\s\\S]*$",
+            "type": "string",
+            "description": "The summary of the services provided by the subscription"
+          },
+          "status": {
+            "type": "string",
+            "description": "The current status of the subscription. Possible values are: Active, Inactive"
+          },
+          "matchingPattern": {
+            "$ref": "#/components/schemas/MatchingPattern"
+          }
+        },
+        "additionalProperties": false,
+        "description": "The information required to create a subscription"
+      },
+      "EventTypeSchema": {
+        "required": [
+          "jsonSchema"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The identifier of the event type",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "The summary of the event",
+            "nullable": true
+          },
+          "entity": {
+            "type": "string",
+            "description": "The entity against which the event originated",
+            "nullable": true
+          },
+          "eventName": {
+            "type": "string",
+            "description": "Identifier name of the event",
+            "nullable": true
+          },
+          "jsonSchema": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "The schema of the event"
+          }
+        },
+        "additionalProperties": false,
+        "description": "An EventType object"
+      },
+      "Link": {
+        "required": [
+          "href",
+          "method",
+          "relation"
+        ],
+        "type": "object",
+        "properties": {
+          "relation": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string",
+            "format": "uri"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "method": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LusidProblemDetails": {
+        "required": [
+          "code",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "errorDetails": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LusidValidationProblemDetails": {
+        "required": [
+          "code",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "errorDetails": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MatchingPattern": {
+        "required": [
+          "eventType"
+        ],
+        "type": "object",
+        "properties": {
+          "eventType": {
+            "type": "string",
+            "description": "The type of event to subscribe to. Possible values are: Finbourne.Notifications.WebApi.Dtos.MatchingPattern.EventType"
+          },
+          "filter": {
+            "maxLength": 2147483647,
+            "minLength": 0,
+            "pattern": "^[\\s\\S]*$",
+            "type": "string",
+            "description": "A filter on the event. See https://support.lusid.com/filtering-results-from-lusid for more information. If not provided, all events will be matched",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "A matching pattern object"
+      },
+      "NoContent": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Notification": {
+        "required": [
+          "content",
+          "createdAt",
+          "createdBy",
+          "deliveryChannel",
+          "id",
+          "lastModifiedAt",
+          "lastModifiedBy",
+          "recipients"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The identifier of the notification"
+          },
+          "description": {
+            "maxLength": 512,
+            "minLength": 1,
+            "pattern": "^[\\s\\S]*$",
+            "type": "string",
+            "description": "The summary of the services provided by the notification",
+            "nullable": true
+          },
+          "deliveryChannel": {
+            "type": "string",
+            "description": "The medium through which the notification is delivered"
+          },
+          "recipients": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false
+            },
+            "description": "Recipient of the notification"
+          },
+          "content": {
+            "maxLength": 5,
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false
+            },
+            "description": "The contents of the notification"
+          },
+          "status": {
+            "$ref": "#/components/schemas/NotificationStatus"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "The time at which the subscription was made",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "The user who made the subscription"
+          },
+          "lastModifiedAt": {
+            "type": "string",
+            "description": "The time at which the subscription was last modified",
+            "format": "date-time"
+          },
+          "lastModifiedBy": {
+            "type": "string",
+            "description": "The user who last modified the subscription"
+          }
+        },
+        "additionalProperties": false,
+        "description": "A notification object"
+      },
+      "NotificationStatus": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string",
+            "description": "The status of the notification",
+            "nullable": true
+          },
+          "lastUpdated": {
+            "type": "string",
+            "description": "The time at which the notification status was last updated",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "The status object of a notification"
+      },
+      "ResourceId": {
+        "required": [
+          "code",
+          "scope"
+        ],
+        "type": "object",
+        "properties": {
+          "scope": {
+            "$ref": "#/components/schemas/Scope"
+          },
+          "code": {
+            "$ref": "#/components/schemas/Code"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ResourceListOfEventTypeSchema": {
+        "required": [
+          "values"
+        ],
+        "type": "object",
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EventTypeSchema"
+            }
+          },
+          "href": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Link"
+            },
+            "nullable": true
+          },
+          "nextPage": {
+            "type": "string",
+            "nullable": true
+          },
+          "previousPage": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ResourceListOfNotification": {
+        "required": [
+          "values"
+        ],
+        "type": "object",
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Notification"
+            }
+          },
+          "href": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Link"
+            },
+            "nullable": true
+          },
+          "nextPage": {
+            "type": "string",
+            "nullable": true
+          },
+          "previousPage": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ResourceListOfSubscription": {
+        "required": [
+          "values"
+        ],
+        "type": "object",
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Subscription"
+            }
+          },
+          "href": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Link"
+            },
+            "nullable": true
+          },
+          "nextPage": {
+            "type": "string",
+            "nullable": true
+          },
+          "previousPage": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Scope": {
+        "type": "object",
+        "properties": {
+          "scopeName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Subscription": {
+        "required": [
+          "createdAt",
+          "createdBy",
+          "displayName",
+          "id",
+          "lastModifiedAt",
+          "lastModifiedBy",
+          "matchingPattern",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/ResourceId"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "The name of the subscription"
+          },
+          "description": {
+            "type": "string",
+            "description": "The summary of the services provided by the subscription",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "description": "The current status of the subscription"
+          },
+          "matchingPattern": {
+            "$ref": "#/components/schemas/MatchingPattern"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "The time at which the subscription was made",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "The user who made the subscription"
+          },
+          "lastModifiedAt": {
+            "type": "string",
+            "description": "The time at which the subscription was last modified",
+            "format": "date-time"
+          },
+          "lastModifiedBy": {
+            "type": "string",
+            "description": "The user who last modified the subscription"
+          }
+        },
+        "additionalProperties": false,
+        "description": "A subscription object"
+      },
+      "SubscriptionDetail": {
+        "required": [
+          "createdAt",
+          "createdBy",
+          "displayName",
+          "id",
+          "lastModifiedAt",
+          "lastModifiedBy",
+          "matchingPattern",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "notifications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Notification"
+            },
+            "description": "List of notifications belonging to a subscription",
+            "nullable": true
+          },
+          "id": {
+            "$ref": "#/components/schemas/ResourceId"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "The name of the subscription"
+          },
+          "description": {
+            "type": "string",
+            "description": "The summary of the services provided by the subscription",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "description": "The current status of the subscription"
+          },
+          "matchingPattern": {
+            "$ref": "#/components/schemas/MatchingPattern"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "The time at which the subscription was made",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "The user who made the subscription"
+          },
+          "lastModifiedAt": {
+            "type": "string",
+            "description": "The time at which the subscription was last modified",
+            "format": "date-time"
+          },
+          "lastModifiedBy": {
+            "type": "string",
+            "description": "The user who last modified the subscription"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Subscription that contains its list of notifications"
+      },
+      "UpdateApiRequestNotification": {
+        "required": [
+          "description",
+          "httpMethod",
+          "pathAndQuery"
+        ],
+        "type": "object",
+        "properties": {
+          "description": {
+            "maxLength": 512,
+            "minLength": 1,
+            "pattern": "^[\\s\\S]*$",
+            "type": "string",
+            "description": "The summary of the services provided by the notification"
+          },
+          "httpMethod": {
+            "type": "string",
+            "description": "The http method such as GET, POST, etc. to use on the Api Request"
+          },
+          "pathAndQuery": {
+            "maxLength": 2147483647,
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9-._~:\\/?#[\\]@!$&'()*+,;%=]*$",
+            "type": "string",
+            "description": "The url to send the request to."
+          },
+          "content": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "The content of the request",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The information required to update an ApiRequest notification of the ApiRequest type"
+      },
+      "UpdateEmailNotification": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "maxLength": 512,
+            "minLength": 1,
+            "pattern": "^[\\s\\S]*$",
+            "type": "string",
+            "description": "The summary of the services provided by the notification",
+            "nullable": true
+          },
+          "subject": {
+            "maxLength": 1024,
+            "minLength": 1,
+            "pattern": "^[\\s\\S]*$",
+            "type": "string",
+            "description": "The subject of the email",
+            "nullable": true
+          },
+          "body": {
+            "maxLength": 1024,
+            "minLength": 1,
+            "pattern": "^[\\s\\S]*$",
+            "type": "string",
+            "description": "The body of the email",
+            "nullable": true
+          },
+          "emailAddressTo": {
+            "maxLength": 10,
+            "minLength": 1,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "'To' recipients of the email",
+            "nullable": true
+          },
+          "emailAddressCc": {
+            "maxLength": 10,
+            "minLength": 1,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "'Cc' recipients of the email",
+            "nullable": true
+          },
+          "emailAddressBcc": {
+            "maxLength": 10,
+            "minLength": 1,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "'Bcc' recipients of the email",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The information required to update an Email notification"
+      },
+      "UpdateSmsNotification": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "maxLength": 512,
+            "minLength": 1,
+            "pattern": "^[\\s\\S]*$",
+            "type": "string",
+            "description": "The summary of the services provided by the notification",
+            "nullable": true
+          },
+          "body": {
+            "maxLength": 1024,
+            "minLength": 1,
+            "pattern": "^[\\s\\S]*$",
+            "type": "string",
+            "description": "The body of the SMS",
+            "nullable": true
+          },
+          "recipients": {
+            "maxLength": 10,
+            "minLength": 1,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The phone numbers to which the SMS will be sent to (E.164 format)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The information required to update an SMS notification"
+      },
+      "UpdateSubscription": {
+        "required": [
+          "description",
+          "displayName",
+          "matchingPattern",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "displayName": {
+            "maxLength": 64,
+            "minLength": 1,
+            "pattern": "^[\\s\\S]*$",
+            "type": "string",
+            "description": "The name of the subscription"
+          },
+          "description": {
+            "maxLength": 512,
+            "minLength": 1,
+            "pattern": "^[\\s\\S]*$",
+            "type": "string",
+            "description": "The summary of the services provided by the subscription"
+          },
+          "status": {
+            "type": "string",
+            "description": "The current status of the subscription. Possible values are: Active, Inactive"
+          },
+          "matchingPattern": {
+            "$ref": "#/components/schemas/MatchingPattern"
+          }
+        },
+        "additionalProperties": false,
+        "description": "The information required to update a subscription"
+      }
+    },
+    "securitySchemes": {
+      "oauth2": {
+        "type": "oauth2",
+        "description": "OAuth2 Implicit Grant",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "https://lusid.okta.com/oauth2/default/v1/authorize",
+            "scopes": { }
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    { }
+  ],
+  "tags": [
+    {
+      "name": "EventTypes",
+      "description": "Methods for discovering possible event types."
+    },
+    {
+      "name": "Events",
+      "description": "Methods for triggering events."
+    },
+    {
+      "name": "Notifications",
+      "description": "Methods for managing a subscription's notifications."
+    },
+    {
+      "name": "Subscriptions",
+      "description": "Methods for managing subscriptions"
+    }
+  ],
+  "x-tagGroups": {
+    "name": "API",
+    "tags": [
+      "EventTypes",
+      "Events",
+      "Notifications",
+      "Subscriptions"
+    ]
+  }
+}
