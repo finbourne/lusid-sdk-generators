@@ -5,7 +5,7 @@
     "developerOrganizationUrl": "https://www.finbourne.com",
     "sourceFolder": "src/main/java",
     "groupId": "com.finbourne",
-    "artifactId": "lusid-sdk",
+    "artifactId": "lusid-sdk-preview",
     "dateLibrary": "java8",
     "modelPackage": "com.finbourne.lusid.model",
     "apiPackage": "com.finbourne.lusid.api",
