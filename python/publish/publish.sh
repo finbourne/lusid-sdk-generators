@@ -35,8 +35,8 @@ python setup.py sdist
 python setup.py bdist_wheel
 
 # upload
-#twine upload --repository-url $pypi_repo -u pypi -p $pypi_password dist/*
-twine upload  -u finbourne -p $pypi_password dist/*
+twine upload --repository-url $pypi_repo -u pypi -p $pypi_password dist/*
+# twine upload  -u finbourne -p $pypi_password dist/*
 
 cd ..
 
