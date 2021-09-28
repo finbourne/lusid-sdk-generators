@@ -13,7 +13,10 @@ from {{packageName}}.api_client import ApiClient
 from {{packageName}}.exceptions import (  # noqa: F401
     ApiTypeError,
     ApiValueError
-)
+){{#hasImport}}
+
+{{/hasImport}}{{#imports}}{{import}}
+{{/imports}}
 
 
 {{#operations}}
@@ -107,10 +110,10 @@ class {{classname}}(object):
                               request; this effectively ignores the authentication
                               in the spec for a single request.
         :type _request_auth: dict, optional
-        :return: Returns the result object.
+        :return: Returns the result object, the HTTP status code, and the headers.
                  If the method is called asynchronously,
                  returns the request thread.
-        :rtype: {{#returnType}}tuple({{returnType}}, status_code(int), headers(HTTPHeaderDict)){{/returnType}}{{^returnType}}None{{/returnType}}
+        :rtype: {{#returnType}}({{returnType}}, int, HTTPHeaderDict){{/returnType}}{{^returnType}}None{{/returnType}}
         """
 
         {{#servers.0}}
