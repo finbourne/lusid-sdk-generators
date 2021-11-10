@@ -8,7 +8,7 @@
       "url": "https://www.finbourne.com",
       "email": "info@finbourne.com"
     },
-    "version": "0.1.18",
+    "version": "0.1.25",
     "x-logo": {
       "url": "https://content.finbourne.com/LUSID-header.png",
       "backgroundColor": "#415464"
@@ -39,11 +39,13 @@
   "values": [
     {
       "description": "Workflow to manage issues",
-      "code": "IssueWorkflow"
+      "code": "IssueWorkflow",
+      "latestVersion": 1
     },
     {
       "description": "Workflow involved in trade booking",
-      "code": "TradingBookingWorkflow"
+      "code": "TradingBookingWorkflow",
+      "latestVersion": 2
     }
   ],
   "links": []
@@ -168,15 +170,17 @@
                 },
                 "example": {
   "workflowCode": "IssueWorkflow",
+  "workflowVersion": 1,
   "workflowInstanceId": "IssueWorkflowInstance123",
+  "correlationId": "CorrelationId123",
   "state": "Started",
+  "executionStatus": "Waiting",
+  "nextActivity": "WaitingToBeAssigned",
+  "startedAt": "2021-01-01T10:00:00.0000000+00:00",
   "executionContext": {
     "comment": "FileNotReceived issue created by Joe Root"
   },
-  "startedAt": "2021-01-01T10:00:00.0000000+00:00",
-  "executionStatus": "Waiting",
-  "nextActivity": "WaitingToBeAssigned",
-  "activities": [
+  "activityHistory": [
     {
       "activityName": "Start",
       "activityType": "StartActivity",
@@ -199,8 +203,7 @@
       "activityType": "ReceiveSignalActivity",
       "activityExecutionStatus": "NotStarted"
     }
-  ],
-  "correlationId": "CorrelationId123"
+  ]
 }
               }
             }
@@ -273,15 +276,17 @@
                 },
                 "example": {
   "workflowCode": "IssueWorkflow",
+  "workflowVersion": 1,
   "workflowInstanceId": "IssueWorkflowInstance123",
+  "correlationId": "CorrelationId123",
   "state": "Started",
+  "executionStatus": "Waiting",
+  "nextActivity": "WaitingToBeAssigned",
+  "startedAt": "2021-01-01T10:00:00.0000000+00:00",
   "executionContext": {
     "comment": "FileNotReceived issue created by Joe Root"
   },
-  "startedAt": "2021-01-01T10:00:00.0000000+00:00",
-  "executionStatus": "Waiting",
-  "nextActivity": "WaitingToBeAssigned",
-  "activities": [
+  "activityHistory": [
     {
       "activityName": "Start",
       "activityType": "StartActivity",
@@ -304,8 +309,7 @@
       "activityType": "ReceiveSignalActivity",
       "activityExecutionStatus": "NotStarted"
     }
-  ],
-  "correlationId": "CorrelationId123"
+  ]
 }
               }
             }
@@ -431,15 +435,17 @@
                 },
                 "example": {
   "workflowCode": "IssueWorkflow",
+  "workflowVersion": 1,
   "workflowInstanceId": "IssueWorkflowInstance123",
+  "correlationId": "CorrelationId123",
   "state": "Started",
+  "executionStatus": "Waiting",
+  "nextActivity": "WaitingToBeAssigned",
+  "startedAt": "2021-01-01T10:00:00.0000000+00:00",
   "executionContext": {
     "comment": "FileNotReceived issue created by Joe Root"
   },
-  "startedAt": "2021-01-01T10:00:00.0000000+00:00",
-  "executionStatus": "Waiting",
-  "nextActivity": "WaitingToBeAssigned",
-  "activities": [
+  "activityHistory": [
     {
       "activityName": "Start",
       "activityType": "StartActivity",
@@ -462,8 +468,7 @@
       "activityType": "ReceiveSignalActivity",
       "activityExecutionStatus": "NotStarted"
     }
-  ],
-  "correlationId": "CorrelationId123"
+  ]
 }
               }
             }
@@ -559,15 +564,17 @@
   "values": [
     {
       "workflowCode": "IssueWorkflow",
+      "workflowVersion": 1,
       "workflowInstanceId": "IssueWorkflowInstance123",
+      "correlationId": "CorrelationId123",
       "state": "Started",
+      "executionStatus": "Waiting",
+      "nextActivity": "WaitingToBeAssigned",
+      "startedAt": "2021-01-01T10:00:00.0000000+00:00",
       "executionContext": {
         "comment": "FileNotReceived issue created by Joe Root"
       },
-      "startedAt": "2021-01-01T10:00:00.0000000+00:00",
-      "executionStatus": "Waiting",
-      "nextActivity": "WaitingToBeAssigned",
-      "activities": [
+      "activityHistory": [
         {
           "activityName": "Start",
           "activityType": "StartActivity",
@@ -590,20 +597,21 @@
           "activityType": "ReceiveSignalActivity",
           "activityExecutionStatus": "NotStarted"
         }
-      ],
-      "correlationId": "CorrelationId123"
+      ]
     },
     {
       "workflowCode": "IssueWorkflow",
+      "workflowVersion": 1,
       "workflowInstanceId": "IssueWorkflowInstanceXYZ",
+      "correlationId": "CorrelationId123",
       "state": "Started",
+      "executionStatus": "Waiting",
+      "nextActivity": "WaitingToBeAssigned",
+      "startedAt": "2021-01-01T10:00:00.0000000+00:00",
       "executionContext": {
         "comment": "FileNotReceived issue created by Joe Root"
       },
-      "startedAt": "2021-01-01T10:00:00.0000000+00:00",
-      "executionStatus": "Waiting",
-      "nextActivity": "WaitingToBeAssigned",
-      "activities": [
+      "activityHistory": [
         {
           "activityName": "Start",
           "activityType": "StartActivity",
@@ -626,20 +634,21 @@
           "activityType": "ReceiveSignalActivity",
           "activityExecutionStatus": "NotStarted"
         }
-      ],
-      "correlationId": "CorrelationId123"
+      ]
     },
     {
       "workflowCode": "TradeBookingWorkflow",
+      "workflowVersion": 1,
       "workflowInstanceId": "TradeBookingWorkflowInstance999",
+      "correlationId": "CorrelationId123",
       "state": "Started",
+      "executionStatus": "Waiting",
+      "nextActivity": "WaitingToBeAssigned",
+      "startedAt": "2021-01-01T10:00:00.0000000+00:00",
       "executionContext": {
         "comment": "FileNotReceived issue created by Joe Root"
       },
-      "startedAt": "2021-01-01T10:00:00.0000000+00:00",
-      "executionStatus": "Waiting",
-      "nextActivity": "WaitingToBeAssigned",
-      "activities": [
+      "activityHistory": [
         {
           "activityName": "Start",
           "activityType": "StartActivity",
@@ -662,8 +671,7 @@
           "activityType": "ReceiveSignalActivity",
           "activityExecutionStatus": "NotStarted"
         }
-      ],
-      "correlationId": "CorrelationId123"
+      ]
     }
   ],
   "links": []
@@ -729,15 +737,17 @@
                 },
                 "example": {
   "workflowCode": "IssueWorkflow",
+  "workflowVersion": 1,
   "workflowInstanceId": "IssueWorkflowInstance123",
+  "correlationId": "CorrelationId123",
   "state": "Started",
+  "executionStatus": "Waiting",
+  "nextActivity": "WaitingToBeAssigned",
+  "startedAt": "2021-01-01T10:00:00.0000000+00:00",
   "executionContext": {
     "comment": "FileNotReceived issue created by Joe Root"
   },
-  "startedAt": "2021-01-01T10:00:00.0000000+00:00",
-  "executionStatus": "Waiting",
-  "nextActivity": "WaitingToBeAssigned",
-  "activities": [
+  "activityHistory": [
     {
       "activityName": "Start",
       "activityType": "StartActivity",
@@ -760,8 +770,7 @@
       "activityType": "ReceiveSignalActivity",
       "activityExecutionStatus": "NotStarted"
     }
-  ],
-  "correlationId": "CorrelationId123"
+  ]
 }
               }
             }
@@ -887,15 +896,17 @@
                 },
                 "example": {
   "workflowCode": "IssueWorkflow",
+  "workflowVersion": 1,
   "workflowInstanceId": "IssueWorkflowInstance123",
+  "correlationId": "CorrelationId123",
   "state": "Started",
+  "executionStatus": "Waiting",
+  "nextActivity": "WaitingToBeAssigned",
+  "startedAt": "2021-01-01T10:00:00.0000000+00:00",
   "executionContext": {
     "comment": "FileNotReceived issue created by Joe Root"
   },
-  "startedAt": "2021-01-01T10:00:00.0000000+00:00",
-  "executionStatus": "Waiting",
-  "nextActivity": "WaitingToBeAssigned",
-  "activities": [
+  "activityHistory": [
     {
       "activityName": "Start",
       "activityType": "StartActivity",
@@ -918,8 +929,7 @@
       "activityType": "ReceiveSignalActivity",
       "activityExecutionStatus": "NotStarted"
     }
-  ],
-  "correlationId": "CorrelationId123"
+  ]
 }
               }
             }
@@ -980,6 +990,11 @@
             "description": "Friendly workflow code for example IssueWorkflow, PortfolioCreatedWorkflow, TradeBookingWorkflow etc",
             "nullable": true,
             "readOnly": true
+          },
+          "latestVersion": {
+            "type": "integer",
+            "description": "Latest workflow definition version. This version increments when workflow definition changes.",
+            "format": "int32"
           }
         },
         "additionalProperties": false,
@@ -1151,6 +1166,25 @@
             "type": "string",
             "description": "Any info associated with the activity execution. Error message for example.",
             "nullable": true
+          },
+          "activityContext": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false
+            },
+            "description": "Any arbitrary data context associated with the activity.",
+            "nullable": true
+          },
+          "stateTransitionFrom": {
+            "type": "string",
+            "description": "State associated with previous activity if any otherwise empty.",
+            "nullable": true
+          },
+          "stateTransitionTo": {
+            "type": "string",
+            "description": "State associated with current activity if any otherwise empty.",
+            "nullable": true
           }
         },
         "additionalProperties": false,
@@ -1164,9 +1198,19 @@
             "description": "Workflow Code",
             "nullable": true
           },
+          "workflowVersion": {
+            "type": "integer",
+            "description": "Workflow definition version. When this version changes any new instance of the workflow will have the updated version number whereas\r\nversion number on existing instances will remain the same.",
+            "format": "int32"
+          },
           "workflowInstanceId": {
             "type": "string",
             "description": "Workflow Instance Id which is system generated",
+            "nullable": true
+          },
+          "correlationId": {
+            "type": "string",
+            "description": "Id of any external entity associated with the workflow instance, otherwise system generated id",
             "nullable": true
           },
           "state": {
@@ -1174,13 +1218,22 @@
             "description": "Any info about the workflow state, i.e. transition between activities",
             "nullable": true
           },
-          "executionContext": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "object",
-              "additionalProperties": false
+          "executionStatus": {
+            "type": "string",
+            "description": "Workflow execution status",
+            "nullable": true
+          },
+          "nextActivity": {
+            "type": "string",
+            "description": "Name of the next step/activity in the workflow. Empty if the workflow has already finished execution.",
+            "nullable": true
+          },
+          "allowedActions": {
+            "type": "array",
+            "items": {
+              "type": "string"
             },
-            "description": "Data associated with a particular instance of the workflow",
+            "description": "Allowed actions if next activity in the workflow requires manual action, otherwise empty.",
             "nullable": true
           },
           "startedAt": {
@@ -1200,40 +1253,26 @@
             "format": "date-time",
             "nullable": true
           },
-          "executionStatus": {
-            "type": "string",
-            "description": "Workflow execution status",
+          "executionContext": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false
+            },
+            "description": "Data associated with a particular instance of the workflow.",
+            "nullable": true
+          },
+          "activityHistory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkflowActivitySummary"
+            },
+            "description": "Summary of all executed activities in the workflow instance. The latest executed activity is at the top and traversal from top to bottom\r\nwould give us a history of state transition from latest state to initial.",
             "nullable": true
           },
           "executionInfo": {
             "type": "string",
             "description": "Any info associated with the workflow execution. This would be an error message if ExecutionStatus is Faulted for example.",
-            "nullable": true
-          },
-          "nextActivity": {
-            "type": "string",
-            "description": "Name of the next step/activity in the workflow. Empty if the workflow has already finished execution.",
-            "nullable": true
-          },
-          "activities": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/WorkflowActivitySummary"
-            },
-            "description": "Summary of all activities in the workflow instance. This would suggest which activities in the workflow has\r\nbeen executed or are pending.",
-            "nullable": true
-          },
-          "correlationId": {
-            "type": "string",
-            "description": "Id of any external entity associated with the workflow instance, otherwise system generated id",
-            "nullable": true
-          },
-          "allowedActions": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Allowed actions if next activity in the workflow requires manual action, otherwise empty.",
             "nullable": true
           }
         },

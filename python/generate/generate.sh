@@ -57,6 +57,7 @@ java -jar openapi-generator-cli.jar generate \
     -t $gen_root/templates \
     -c $config_file
 
+
     # enable the following if a manual override is required
     # --skip-validate-spec
 
