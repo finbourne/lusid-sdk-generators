@@ -138,10 +138,7 @@ namespace {{packageName}}.{{apiPackage}}
         {
             if (configuration == null) throw new ArgumentNullException("configuration");
 
-            this.Configuration = {{packageName}}.Client.Configuration.MergeConfigurations(
-                {{packageName}}.Client.GlobalConfiguration.Instance,
-                configuration
-            );
+            this.Configuration = configuration;
             this.Client = new {{packageName}}.Client.ApiClient(this.Configuration.BasePath);
             {{#supportsAsync}}
             this.AsynchronousClient = new {{packageName}}.Client.ApiClient(this.Configuration.BasePath);
