@@ -48,7 +48,7 @@ class ApiClient(object):
         to the API. More threads means more concurrent API requests.
     """
 
-    PRIMITIVE_TYPES = (float, bool, bytes, six.text_type, Decimal) + six.integer_types
+   PRIMITIVE_TYPES = (float, bool, bytes, six.text_type, Decimal) + six.integer_types
     NATIVE_TYPES_MAPPING = {
         'int': int,
         'long': int if six.PY3 else long,  # noqa: F821
@@ -62,7 +62,7 @@ class ApiClient(object):
     _pool = None
 
     def __init__(self, configuration=None, header_name=None, header_value=None,
-                 cookie=None, pool_threads=1, flag_to_use_decimal= False):
+                 cookie=None, pool_threads=1, flag_to_use_decimal=False):
         if configuration is None:
             configuration = Configuration.get_default_copy()
         self.configuration = configuration
@@ -74,7 +74,7 @@ class ApiClient(object):
             self.default_headers[header_name] = header_value
         self.cookie = cookie
         # Set default User-Agent.
-        self.user_agent = '{{{httpUserAgent}}}{{^httpUserAgent}}OpenAPI-Generator/{{{packageVersion}}}/python{{/httpUserAgent}}'
+        self.user_agent = '{{#httpUserAgent}}{{{.}}}{{/httpUserAgent}}{{^httpUserAgent}}OpenAPI-Generator/{{{packageVersion}}}/python{{/httpUserAgent}}'
         self.client_side_validation = configuration.client_side_validation
         self.flag_to_use_decimal = flag_to_use_decimal
 
@@ -113,7 +113,7 @@ class ApiClient(object):
          avoids instantiating unused threadpool for blocking clients.
         """
         if self._pool is None:
-            atexit.registerF(self.close)
+            atexit.register(self.close)
             self._pool = ThreadPool(self.pool_threads)
         return self._pool
 
@@ -216,7 +216,7 @@ class ApiClient(object):
             {{#tornado}}
             raise tornado.gen.Return(return_data)
             {{/tornado}}
-
+        
         response_type = response_types_map.get(response_data.status, None)
 
         if six.PY3 and response_type not in ["file", "bytes"]:
@@ -228,7 +228,7 @@ class ApiClient(object):
             response_data.data = response_data.data.decode(encoding)
 
         # deserialize response data
-
+        
         if response_type:
             return_data = self.deserialize(response_data, response_type)
         else:
@@ -306,13 +306,11 @@ class ApiClient(object):
             return self.__deserialize_file(response)
 
         # fetch data from response object
-
-
         try:
             if self.flag_to_use_decimal:
-                data = json.loads(response.data, parse_float = Decimal)
+                data=json.loads(response.data, parse_float = Decimal)
             else:
-                data = json.loads(response.data)
+                 data=json.loads(response.data)
         except ValueError:
             data = response.data
 
@@ -571,12 +569,12 @@ class ApiClient(object):
         else:
             return content_types[0]
 
-    def update_params_for_auth(self, headers, queries, auth_settings,
+    def update_params_for_auth(self, headers, querys, auth_settings,
                                request_auth=None):
         """Updates header and query params based on authentication setting.
 
         :param headers: Header parameters dict to be updated.
-        :param queries: Query parameters tuple list to be updated.
+        :param querys: Query parameters tuple list to be updated.
         :param auth_settings: Authentication setting identifiers list.
         :param request_auth: if set, the provided settings will
                              override the token in the configuration.
@@ -585,19 +583,19 @@ class ApiClient(object):
             return
 
         if request_auth:
-            self._apply_auth_params(headers, queries, request_auth)
+            self._apply_auth_params(headers, querys, request_auth)
             return
 
         for auth in auth_settings:
             auth_setting = self.configuration.auth_settings().get(auth)
             if auth_setting:
-                self._apply_auth_params(headers, queries, auth_setting)
+                self._apply_auth_params(headers, querys, auth_setting)
 
-    def _apply_auth_params(self, headers, queries, auth_setting):
+    def _apply_auth_params(self, headers, querys, auth_setting):
         """Updates the request parameters based on a single auth_setting
 
         :param headers: Header parameters dict to be updated.
-        :param queries: Query parameters tuple list to be updated.
+        :param querys: Query parameters tuple list to be updated.
         :param auth_setting: auth settings for the endpoint
         """
         if auth_setting['in'] == 'cookie':
@@ -605,7 +603,7 @@ class ApiClient(object):
         elif auth_setting['in'] == 'header':
             headers[auth_setting['key']] = auth_setting['value']
         elif auth_setting['in'] == 'query':
-            queries.append((auth_setting['key'], auth_setting['value']))
+            querys.append((auth_setting['key'], auth_setting['value']))
         else:
             raise ApiValueError(
                 'Authentication token must be in `query` or `header`'
@@ -643,16 +641,12 @@ class ApiClient(object):
 
         :return: int, long, float, str, bool.
         """
-
-        if type(klass) is Decimal and self.flag_to_use_decimal:
-            return Decimal(data)
-        else:
-            try:
-                return klass(data)
-            except UnicodeEncodeError:
-                return six.text_type(data)
-            except TypeError:
-                return data
+        try:
+            return klass(data)
+        except UnicodeEncodeError:
+            return six.text_type(data)
+        except TypeError:
+            return data
 
     def __deserialize_object(self, value):
         """Return an original value.
