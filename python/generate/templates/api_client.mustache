@@ -76,7 +76,7 @@ class ApiClient(object):
         # Set default User-Agent.
         self.user_agent = '{{#httpUserAgent}}{{{.}}}{{/httpUserAgent}}{{^httpUserAgent}}OpenAPI-Generator/{{{packageVersion}}}/python{{/httpUserAgent}}'
         self.client_side_validation = configuration.client_side_validation
-        self.flag_to_use_decimal = flag_to_use_decimal
+        self.flag_to_use_decimal = configuration.flag_to_use_decimal
 
         if self.flag_to_use_decimal:
             self.NATIVE_TYPES_MAPPING['float'] = Decimal
@@ -308,9 +308,9 @@ class ApiClient(object):
         # fetch data from response object
         try:
             if self.flag_to_use_decimal:
-                data=json.loads(response.data, parse_float = Decimal)
+                data = json.loads(response.data, parse_float = Decimal)
             else:
-                 data=json.loads(response.data)
+                 data = json.loads(response.data)
         except ValueError:
             data = response.data
 
