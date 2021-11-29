@@ -48,8 +48,8 @@ class ApiClient(object):
         to the API. More threads means more concurrent API requests.
     """
 
-   PRIMITIVE_TYPES = (float, bool, bytes, six.text_type, Decimal) + six.integer_types
-   NATIVE_TYPES_MAPPING = {
+    PRIMITIVE_TYPES = (float, bool, bytes, six.text_type, Decimal) + six.integer_types
+    NATIVE_TYPES_MAPPING = {
         'int': int,
         'long': int if six.PY3 else long,  # noqa: F821
         'float': float,
@@ -58,7 +58,7 @@ class ApiClient(object):
         'date': datetime.date,
         'datetime': datetime.datetime,
         'object': object,
-    }
+         }
     _pool = None
 
     def __init__(self, configuration=None, header_name=None, header_value=None,
