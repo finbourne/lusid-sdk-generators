@@ -310,7 +310,7 @@ class ApiClient(object):
             if self.flag_to_use_decimal:
                 data = json.loads(response.data, parse_float = Decimal)
             else:
-                 data = json.loads(response.data)
+                data = json.loads(response.data)
         except ValueError:
             data = response.data
 
