@@ -5,6 +5,7 @@
 from __future__ import absolute_import
 
 import io
+import json
 import logging
 import re
 import ssl
@@ -14,7 +15,6 @@ import certifi
 import six
 from six.moves.urllib.parse import urlencode
 import urllib3
-import simplejson as json
 
 from {{packageName}}.exceptions import ApiException, ApiValueError
 from {{packageName}}.tcp.tcp_keep_alive_probes import TCPKeepAlivePoolManager, TCPKeepAliveProxyManager
