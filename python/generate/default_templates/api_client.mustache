@@ -4,8 +4,8 @@ from __future__ import absolute_import
 
 import atexit
 import datetime
-from dateutil.parser import parse
 import json
+from dateutil.parser import parse
 import mimetypes
 from multiprocessing.pool import ThreadPool
 import os
@@ -57,7 +57,7 @@ class ApiClient(object):
         'date': datetime.date,
         'datetime': datetime.datetime,
         'object': object,
-    }
+         }
     _pool = None
 
     def __init__(self, configuration=None, header_name=None, header_value=None,
