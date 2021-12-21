@@ -71,7 +71,7 @@ shopt -u extglob
 
 # update pom version
 sdk_version=$(cat $swagger_file | jq -r '.info.version')
-mvn -f $sdk_output_folder/pom.xml versions:set -DnewVersion=$sdk_version-SNAPSHOT
+mvn -f $sdk_output_folder/pom.xml versions:set -DnewVersion=$sdk_version
 rm -f $output_folder/.openapi-generator-ignore
 rm -f $sdk_output_folder/README.md
 rm -f $output_folder/api
