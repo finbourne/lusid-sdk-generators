@@ -177,7 +177,7 @@ conf = {{{packageName}}}.Configuration(
                  server_index=None, server_variables=None,
                  server_operation_index=None, server_operation_variables=None,
                  ssl_ca_cert=None,
-                 tcp_keep_alive=False,
+                 pool_manager_fn=None,
                  ):
         """Constructor
         """
@@ -306,8 +306,8 @@ conf = {{{packageName}}}.Configuration(
         # Enable client side validation
         self.client_side_validation = True
 
-        # Set TCP keep alive
-        self.tcp_keep_alive = tcp_keep_alive
+        # Set Pool Manager function
+        self.pool_manager_fn = pool_manager_fn
 
         self.socket_options = None
         """Options to pass down to the underlying urllib3 socket
