@@ -80,7 +80,7 @@ class RESTClientObject(object):
                 maxsize=maxsize,
                 cert_reqs=cert_reqs,
                 ca_certs=ca_certs,
-                **addition_pool_args   
+                **addition_pool_args
             )
         else:
             if configuration.proxy:
@@ -216,7 +216,6 @@ class RESTClientObject(object):
 
         if _preload_content:
             r = RESTResponse(r)
-
 
             # log response body
             logger.debug("response body: %s", r.data)
