@@ -30,7 +30,7 @@ cd sdk
 api_version=$(cat ${library_name}/__init__.py | grep __version__ |  awk '{split($0, a, "="); print a[2]}' | tr -d ' "')
 
 # packages to install
-pip install twine wheel cryptography==3.3.1 pyOpenSSL
+pip install twine wheel
 python setup.py sdist
 python setup.py bdist_wheel
 
