@@ -47,7 +47,8 @@ java -jar openapi-generator-cli.jar generate \
     -g java \
     -o $sdk_output_folder \
     -c $config_file \
-    -t $gen_root/templates
+    -t $gen_root/templates \
+    --type-mappings Double=java.math.BigDecimal
 
 # remove redundant generated build files
 rm -f $sdk_output_folder/.openapi-generator-ignore
