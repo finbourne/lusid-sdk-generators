@@ -21,11 +21,20 @@ fi
 gen_root=$1
 output_folder=$2
 swagger_file=$output_folder/$3
-sdk_config=$4
+config_file_name=$4
 sdk_output_folder=$output_folder/sdk
 
+if [[ -z $config_file_name || ! -f $gen_root/$config_file_name ]] ; then
+    echo "[INFO] '$config_file_name' not found, using default config.json"
+    config_file_name=config.json
+fi
+
+echo "[INFO] root generation : $gen_root"
+echo "[INFO] output folder   : $output_folder"
+echo "[INFO] swagger file    : $swagger_file"
+echo "[INFO] config file     : $config_file_name"
+
 ignore_file_name=.openapi-generator-ignore
-config_file_name="${sdk_config:=config.json}"
 config_file=$gen_root/$config_file_name
 ignore_file=$output_folder/$ignore_file_name
 
@@ -33,7 +42,7 @@ app_name=$(cat $config_file | jq -r .packageName)
 
 #   remove all previously generated files
 shopt -s extglob 
-echo "removing previous sdk: $sdk_output_folder"
+echo "[INFO] removing previous sdk: $sdk_output_folder"
 rm -rf $sdk_output_folder/$app_name/!(utilities|tcp)
 shopt -u extglob 
 
@@ -47,7 +56,7 @@ cat $config_file | jq -r --arg SDK_VERSION "$sdk_version" '.packageVersion |= $S
 # remove the verbose description
 cat $swagger_file | jq -r '.info.description |= "FINBOURNE Technology"' > temp && mv temp $swagger_file
 
-echo "generating sdk version: $sdk_version"
+echo "[INFO] generating sdk version: $sdk_version"
 
 # generate the SDK
 java -jar openapi-generator-cli.jar generate \
