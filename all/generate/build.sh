@@ -72,6 +72,12 @@ if [[ -z $lang ]]; then
     
     rm -rf ./output/.git
 
+    # copy custom config to generate folder
+    if [[ ! -z "$config_file" && -f "$config_file" ]] ; then
+        echo "[INFO] copying $config_file to ../../$sdk_lang/generate"
+        install $config_file ../../$sdk_lang/generate
+    fi
+
     # get the specified swagger file
     if [[ "$swagger_source" == *"http"* ]]; then
         echo "[INFO] Using Swagger URL"
