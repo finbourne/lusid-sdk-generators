@@ -5,13 +5,13 @@
     "developerOrganizationUrl": "https://www.finbourne.com",
     "sourceFolder": "src/main/java",
     "groupId": "com.finbourne",
-    "artifactId": "lusid-sdk",
+    "artifactId": "lusid-sdk-preview",
     "dateLibrary": "java8",
     "modelPackage": "com.finbourne.lusid.model",
     "apiPackage": "com.finbourne.lusid.api",
     "invokerPackage": "com.finbourne.lusid",
     "licenseName": "MIT",
-    "licenseUrl": "https://github.com/finbourne/lusid-sdk-java/blob/master/LICENSE.md",
+    "licenseUrl": "https://github.com/finbourne/lusid-sdk-java-preview/blob/master/LICENSE.md",
     "hideGenerationTimestamp": true,
     "metaRequestIdHeader": "lusid-meta-requestid"
 }
