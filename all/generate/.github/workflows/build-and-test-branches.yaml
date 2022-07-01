@@ -1,6 +1,6 @@
 # This job runs the project tests
 
-name: Build and test main branches
+name: Build and test develop branch.
 
 # Trigger the workflow on push or pull request to master or develop
 
