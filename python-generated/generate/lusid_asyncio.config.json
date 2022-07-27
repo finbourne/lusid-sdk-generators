@@ -1,7 +1,0 @@
-{
-  "packageName": "lusid_asyncio",
-  "projectName": "lusid-asyncio-sdk",
-  "generateSourceCodeOnly": "generateSourceCodeOnly",
-  "packageVersion": "0.11.3500",
-  "library": "asyncio"
-}
