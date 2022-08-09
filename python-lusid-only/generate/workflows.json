@@ -1,0 +1,1396 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "FINBOURNE Workflows API",
+    "termsOfService": "https://www.finbourne.com/legal/terms-conditions",
+    "contact": {
+      "name": "FINBOURNE Technology",
+      "url": "https://www.finbourne.com",
+      "email": "info@finbourne.com"
+    },
+    "version": "0.1.18",
+    "x-logo": {
+      "url": "https://content.finbourne.com/LUSID-header.png",
+      "backgroundColor": "#415464"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://fbn-ci.lusid.com/workflows"
+    }
+  ],
+  "paths": {
+    "/api/v1/workflows": {
+      "get": {
+        "tags": [
+          "Workflows"
+        ],
+        "summary": "[EXPERIMENTAL] Get all available workflows",
+        "operationId": "ListWorkflows",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceListOfWorkflow"
+                },
+                "example": {
+  "values": [
+    {
+      "description": "Workflow to manage issues",
+      "code": "IssueWorkflow"
+    },
+    {
+      "description": "Workflow involved in trade booking",
+      "code": "TradingBookingWorkflow"
+    }
+  ],
+  "links": []
+}
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      }
+    },
+    "/api/v1/workflows/{workflowCode}": {
+      "post": {
+        "tags": [
+          "Workflows"
+        ],
+        "summary": "[EXPERIMENTAL] Execute workflow",
+        "description": "This will create a new workflow instance for the specified workflow",
+        "operationId": "ExecuteWorkflow",
+        "parameters": [
+          {
+            "name": "workflowCode",
+            "in": "path",
+            "description": "Workflow Code",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Workflow Code"
+            }
+          },
+          {
+            "name": "correlationId",
+            "in": "query",
+            "description": "Optional. This id can be used to correlate a workflow instance with any entity (e.g. a custom entity or other workflow instance) and also to retrieve and transit workflow instances",
+            "schema": {
+              "type": "string",
+              "description": "Optional. This id can be used to correlate a workflow instance with any entity (e.g. a custom entity or other workflow instance) and also to retrieve and transit workflow instances",
+              "nullable": true
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Data associated with execute request",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExecuteWorkflowRequest"
+              },
+              "example": {
+  "context": {
+    "comments": "Issue Workflow created",
+    "totalIssues": "100",
+    "by": "Joe Root",
+    "at": "01/01/2021 10:00:00"
+  }
+}
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExecuteWorkflowRequest"
+              },
+              "example": {
+  "context": {
+    "comments": "Issue Workflow created",
+    "totalIssues": "100",
+    "by": "Joe Root",
+    "at": "01/01/2021 10:00:00"
+  }
+}
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExecuteWorkflowRequest"
+              },
+              "example": {
+  "context": {
+    "comments": "Issue Workflow created",
+    "totalIssues": "100",
+    "by": "Joe Root",
+    "at": "01/01/2021 10:00:00"
+  }
+}
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExecuteWorkflowRequest"
+              },
+              "example": {
+  "context": {
+    "comments": "Issue Workflow created",
+    "totalIssues": "100",
+    "by": "Joe Root",
+    "at": "01/01/2021 10:00:00"
+  }
+}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowInstance"
+                },
+                "example": {
+  "workflowCode": "IssueWorkflow",
+  "workflowInstanceId": "IssueWorkflowInstance123",
+  "state": "Started",
+  "executionContext": {
+    "comment": "FileNotReceived issue created by Joe Root"
+  },
+  "startedAt": "2021-01-01T10:00:00.0000000+00:00",
+  "executionStatus": "Waiting",
+  "nextActivity": "WaitingToBeAssigned",
+  "activities": [
+    {
+      "activityName": "Start",
+      "activityType": "StartActivity",
+      "activityExecutionStatus": "Finished",
+      "startedAt": "2021-01-01T10:00:00.0000000+00:00",
+      "finishedAt": "2021-01-01T10:00:05.0000000+00:00"
+    },
+    {
+      "activityName": "WaitingToBeAssigned",
+      "activityType": "ReceiveSignalActivity",
+      "activityExecutionStatus": "NotStarted"
+    },
+    {
+      "activityName": "WaitingToBeInProgressOrUnAssigned",
+      "activityType": "ReceiveSignalActivity",
+      "activityExecutionStatus": "NotStarted"
+    },
+    {
+      "activityName": "WaitingToBeFinished",
+      "activityType": "ReceiveSignalActivity",
+      "activityExecutionStatus": "NotStarted"
+    }
+  ],
+  "correlationId": "CorrelationId123"
+}
+              }
+            }
+          },
+          "400": {
+            "description": "The details of the input related failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No workflow found against the provided workflowCode",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      }
+    },
+    "/api/v1/workflows/instance/{correlationId}": {
+      "get": {
+        "tags": [
+          "Workflows"
+        ],
+        "summary": "[EXPERIMENTAL] Get workflow instance",
+        "operationId": "GetWorkflowInstanceByCorrelationId",
+        "parameters": [
+          {
+            "name": "correlationId",
+            "in": "path",
+            "description": "CorrelationId associated with the workflow instance",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "CorrelationId associated with the workflow instance"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowInstance"
+                },
+                "example": {
+  "workflowCode": "IssueWorkflow",
+  "workflowInstanceId": "IssueWorkflowInstance123",
+  "state": "Started",
+  "executionContext": {
+    "comment": "FileNotReceived issue created by Joe Root"
+  },
+  "startedAt": "2021-01-01T10:00:00.0000000+00:00",
+  "executionStatus": "Waiting",
+  "nextActivity": "WaitingToBeAssigned",
+  "activities": [
+    {
+      "activityName": "Start",
+      "activityType": "StartActivity",
+      "activityExecutionStatus": "Finished",
+      "startedAt": "2021-01-01T10:00:00.0000000+00:00",
+      "finishedAt": "2021-01-01T10:00:05.0000000+00:00"
+    },
+    {
+      "activityName": "WaitingToBeAssigned",
+      "activityType": "ReceiveSignalActivity",
+      "activityExecutionStatus": "NotStarted"
+    },
+    {
+      "activityName": "WaitingToBeInProgressOrUnAssigned",
+      "activityType": "ReceiveSignalActivity",
+      "activityExecutionStatus": "NotStarted"
+    },
+    {
+      "activityName": "WaitingToBeFinished",
+      "activityType": "ReceiveSignalActivity",
+      "activityExecutionStatus": "NotStarted"
+    }
+  ],
+  "correlationId": "CorrelationId123"
+}
+              }
+            }
+          },
+          "400": {
+            "description": "The details of the input related failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No workflow instance found against the provided correlationId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      },
+      "post": {
+        "tags": [
+          "Workflows"
+        ],
+        "summary": "[EXPERIMENTAL] Transit workflow",
+        "description": "This would transit the workflow instance to proceed to next step using CorrelationId with the attached data/context and action",
+        "operationId": "TransitWorkflowByCorrelationId",
+        "parameters": [
+          {
+            "name": "correlationId",
+            "in": "path",
+            "description": "CorrelationId associated with the workflow instance",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "CorrelationId associated with the workflow instance"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Data associated with the transit request",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransitWorkflowRequest"
+              },
+              "example": {
+  "action": "Assigned",
+  "context": {
+    "comment": "Looking at the file issue now",
+    "assignedTo": "Kevin Peterson"
+  }
+}
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransitWorkflowRequest"
+              },
+              "example": {
+  "action": "Assigned",
+  "context": {
+    "comment": "Looking at the file issue now",
+    "assignedTo": "Kevin Peterson"
+  }
+}
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransitWorkflowRequest"
+              },
+              "example": {
+  "action": "Assigned",
+  "context": {
+    "comment": "Looking at the file issue now",
+    "assignedTo": "Kevin Peterson"
+  }
+}
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransitWorkflowRequest"
+              },
+              "example": {
+  "action": "Assigned",
+  "context": {
+    "comment": "Looking at the file issue now",
+    "assignedTo": "Kevin Peterson"
+  }
+}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowInstance"
+                },
+                "example": {
+  "workflowCode": "IssueWorkflow",
+  "workflowInstanceId": "IssueWorkflowInstance123",
+  "state": "Started",
+  "executionContext": {
+    "comment": "FileNotReceived issue created by Joe Root"
+  },
+  "startedAt": "2021-01-01T10:00:00.0000000+00:00",
+  "executionStatus": "Waiting",
+  "nextActivity": "WaitingToBeAssigned",
+  "activities": [
+    {
+      "activityName": "Start",
+      "activityType": "StartActivity",
+      "activityExecutionStatus": "Finished",
+      "startedAt": "2021-01-01T10:00:00.0000000+00:00",
+      "finishedAt": "2021-01-01T10:00:05.0000000+00:00"
+    },
+    {
+      "activityName": "WaitingToBeAssigned",
+      "activityType": "ReceiveSignalActivity",
+      "activityExecutionStatus": "NotStarted"
+    },
+    {
+      "activityName": "WaitingToBeInProgressOrUnAssigned",
+      "activityType": "ReceiveSignalActivity",
+      "activityExecutionStatus": "NotStarted"
+    },
+    {
+      "activityName": "WaitingToBeFinished",
+      "activityType": "ReceiveSignalActivity",
+      "activityExecutionStatus": "NotStarted"
+    }
+  ],
+  "correlationId": "CorrelationId123"
+}
+              }
+            }
+          },
+          "400": {
+            "description": "The details of the input related failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No workflow instance found against the provided CorrelationId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      }
+    },
+    "/api/v1/workflows/instances": {
+      "get": {
+        "tags": [
+          "Workflows"
+        ],
+        "summary": "[EXPERIMENTAL] Get workflow instances",
+        "description": "If no parameters are passed then all instances will be returned",
+        "operationId": "ListWorkflowInstances",
+        "parameters": [
+          {
+            "name": "workflowCode",
+            "in": "query",
+            "description": "Optional. Workflow code",
+            "schema": {
+              "type": "string",
+              "description": "Optional. Workflow code",
+              "nullable": true
+            }
+          },
+          {
+            "name": "workflowExecutionStatus",
+            "in": "query",
+            "description": "Optional. Workflow execution status",
+            "schema": {
+              "type": "string",
+              "description": "Optional. Workflow execution status",
+              "nullable": true
+            }
+          },
+          {
+            "name": "workflowInstanceState",
+            "in": "query",
+            "description": "Optional. Custom state associated with workflow instance",
+            "schema": {
+              "type": "string",
+              "description": "Optional. Custom state associated with workflow instance",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceListOfWorkflowInstance"
+                },
+                "example": {
+  "values": [
+    {
+      "workflowCode": "IssueWorkflow",
+      "workflowInstanceId": "IssueWorkflowInstance123",
+      "state": "Started",
+      "executionContext": {
+        "comment": "FileNotReceived issue created by Joe Root"
+      },
+      "startedAt": "2021-01-01T10:00:00.0000000+00:00",
+      "executionStatus": "Waiting",
+      "nextActivity": "WaitingToBeAssigned",
+      "activities": [
+        {
+          "activityName": "Start",
+          "activityType": "StartActivity",
+          "activityExecutionStatus": "Finished",
+          "startedAt": "2021-01-01T10:00:00.0000000+00:00",
+          "finishedAt": "2021-01-01T10:00:05.0000000+00:00"
+        },
+        {
+          "activityName": "WaitingToBeAssigned",
+          "activityType": "ReceiveSignalActivity",
+          "activityExecutionStatus": "NotStarted"
+        },
+        {
+          "activityName": "WaitingToBeInProgressOrUnAssigned",
+          "activityType": "ReceiveSignalActivity",
+          "activityExecutionStatus": "NotStarted"
+        },
+        {
+          "activityName": "WaitingToBeFinished",
+          "activityType": "ReceiveSignalActivity",
+          "activityExecutionStatus": "NotStarted"
+        }
+      ],
+      "correlationId": "CorrelationId123"
+    },
+    {
+      "workflowCode": "IssueWorkflow",
+      "workflowInstanceId": "IssueWorkflowInstanceXYZ",
+      "state": "Started",
+      "executionContext": {
+        "comment": "FileNotReceived issue created by Joe Root"
+      },
+      "startedAt": "2021-01-01T10:00:00.0000000+00:00",
+      "executionStatus": "Waiting",
+      "nextActivity": "WaitingToBeAssigned",
+      "activities": [
+        {
+          "activityName": "Start",
+          "activityType": "StartActivity",
+          "activityExecutionStatus": "Finished",
+          "startedAt": "2021-01-01T10:00:00.0000000+00:00",
+          "finishedAt": "2021-01-01T10:00:05.0000000+00:00"
+        },
+        {
+          "activityName": "WaitingToBeAssigned",
+          "activityType": "ReceiveSignalActivity",
+          "activityExecutionStatus": "NotStarted"
+        },
+        {
+          "activityName": "WaitingToBeInProgressOrUnAssigned",
+          "activityType": "ReceiveSignalActivity",
+          "activityExecutionStatus": "NotStarted"
+        },
+        {
+          "activityName": "WaitingToBeFinished",
+          "activityType": "ReceiveSignalActivity",
+          "activityExecutionStatus": "NotStarted"
+        }
+      ],
+      "correlationId": "CorrelationId123"
+    },
+    {
+      "workflowCode": "TradeBookingWorkflow",
+      "workflowInstanceId": "TradeBookingWorkflowInstance999",
+      "state": "Started",
+      "executionContext": {
+        "comment": "FileNotReceived issue created by Joe Root"
+      },
+      "startedAt": "2021-01-01T10:00:00.0000000+00:00",
+      "executionStatus": "Waiting",
+      "nextActivity": "WaitingToBeAssigned",
+      "activities": [
+        {
+          "activityName": "Start",
+          "activityType": "StartActivity",
+          "activityExecutionStatus": "Finished",
+          "startedAt": "2021-01-01T10:00:00.0000000+00:00",
+          "finishedAt": "2021-01-01T10:00:05.0000000+00:00"
+        },
+        {
+          "activityName": "WaitingToBeAssigned",
+          "activityType": "ReceiveSignalActivity",
+          "activityExecutionStatus": "NotStarted"
+        },
+        {
+          "activityName": "WaitingToBeInProgressOrUnAssigned",
+          "activityType": "ReceiveSignalActivity",
+          "activityExecutionStatus": "NotStarted"
+        },
+        {
+          "activityName": "WaitingToBeFinished",
+          "activityType": "ReceiveSignalActivity",
+          "activityExecutionStatus": "NotStarted"
+        }
+      ],
+      "correlationId": "CorrelationId123"
+    }
+  ],
+  "links": []
+}
+              }
+            }
+          },
+          "400": {
+            "description": "The details of the input related failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      }
+    },
+    "/api/v1/workflows/instances/{workflowInstanceId}": {
+      "get": {
+        "tags": [
+          "Workflows"
+        ],
+        "summary": "[EXPERIMENTAL] Get workflow instance",
+        "operationId": "GetWorkflowInstance",
+        "parameters": [
+          {
+            "name": "workflowInstanceId",
+            "in": "path",
+            "description": "Unique workflow instance identifier",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Unique workflow instance identifier"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowInstance"
+                },
+                "example": {
+  "workflowCode": "IssueWorkflow",
+  "workflowInstanceId": "IssueWorkflowInstance123",
+  "state": "Started",
+  "executionContext": {
+    "comment": "FileNotReceived issue created by Joe Root"
+  },
+  "startedAt": "2021-01-01T10:00:00.0000000+00:00",
+  "executionStatus": "Waiting",
+  "nextActivity": "WaitingToBeAssigned",
+  "activities": [
+    {
+      "activityName": "Start",
+      "activityType": "StartActivity",
+      "activityExecutionStatus": "Finished",
+      "startedAt": "2021-01-01T10:00:00.0000000+00:00",
+      "finishedAt": "2021-01-01T10:00:05.0000000+00:00"
+    },
+    {
+      "activityName": "WaitingToBeAssigned",
+      "activityType": "ReceiveSignalActivity",
+      "activityExecutionStatus": "NotStarted"
+    },
+    {
+      "activityName": "WaitingToBeInProgressOrUnAssigned",
+      "activityType": "ReceiveSignalActivity",
+      "activityExecutionStatus": "NotStarted"
+    },
+    {
+      "activityName": "WaitingToBeFinished",
+      "activityType": "ReceiveSignalActivity",
+      "activityExecutionStatus": "NotStarted"
+    }
+  ],
+  "correlationId": "CorrelationId123"
+}
+              }
+            }
+          },
+          "400": {
+            "description": "The details of the input related failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No workflow instance found against the provided workflowInstanceId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      },
+      "post": {
+        "tags": [
+          "Workflows"
+        ],
+        "summary": "[EXPERIMENTAL] Transit workflow",
+        "description": "This would transit the workflow instance to proceed to next step using WorkflowInstanceId with the attached data/context and action",
+        "operationId": "TransitWorkflow",
+        "parameters": [
+          {
+            "name": "workflowInstanceId",
+            "in": "path",
+            "description": "Unique workflow instance identifier",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "Unique workflow instance identifier"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Data associated with the transit request",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransitWorkflowRequest"
+              },
+              "example": {
+  "action": "Assigned",
+  "context": {
+    "comment": "Looking at the file issue now",
+    "assignedTo": "Kevin Peterson"
+  }
+}
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransitWorkflowRequest"
+              },
+              "example": {
+  "action": "Assigned",
+  "context": {
+    "comment": "Looking at the file issue now",
+    "assignedTo": "Kevin Peterson"
+  }
+}
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransitWorkflowRequest"
+              },
+              "example": {
+  "action": "Assigned",
+  "context": {
+    "comment": "Looking at the file issue now",
+    "assignedTo": "Kevin Peterson"
+  }
+}
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransitWorkflowRequest"
+              },
+              "example": {
+  "action": "Assigned",
+  "context": {
+    "comment": "Looking at the file issue now",
+    "assignedTo": "Kevin Peterson"
+  }
+}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkflowInstance"
+                },
+                "example": {
+  "workflowCode": "IssueWorkflow",
+  "workflowInstanceId": "IssueWorkflowInstance123",
+  "state": "Started",
+  "executionContext": {
+    "comment": "FileNotReceived issue created by Joe Root"
+  },
+  "startedAt": "2021-01-01T10:00:00.0000000+00:00",
+  "executionStatus": "Waiting",
+  "nextActivity": "WaitingToBeAssigned",
+  "activities": [
+    {
+      "activityName": "Start",
+      "activityType": "StartActivity",
+      "activityExecutionStatus": "Finished",
+      "startedAt": "2021-01-01T10:00:00.0000000+00:00",
+      "finishedAt": "2021-01-01T10:00:05.0000000+00:00"
+    },
+    {
+      "activityName": "WaitingToBeAssigned",
+      "activityType": "ReceiveSignalActivity",
+      "activityExecutionStatus": "NotStarted"
+    },
+    {
+      "activityName": "WaitingToBeInProgressOrUnAssigned",
+      "activityType": "ReceiveSignalActivity",
+      "activityExecutionStatus": "NotStarted"
+    },
+    {
+      "activityName": "WaitingToBeFinished",
+      "activityType": "ReceiveSignalActivity",
+      "activityExecutionStatus": "NotStarted"
+    }
+  ],
+  "correlationId": "CorrelationId123"
+}
+              }
+            }
+          },
+          "400": {
+            "description": "The details of the input related failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No workflow instance found against the provided WorkflowInstanceId",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LusidProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ],
+        "x-fbn-apistatus": "Experimental"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Workflow": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "description": "Workflow Description.",
+            "nullable": true,
+            "readOnly": true
+          },
+          "code": {
+            "type": "string",
+            "description": "Friendly workflow code for example IssueWorkflow, PortfolioCreatedWorkflow, TradeBookingWorkflow etc",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents a workflow"
+      },
+      "Link": {
+        "required": [
+          "href",
+          "method",
+          "relation"
+        ],
+        "type": "object",
+        "properties": {
+          "relation": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string",
+            "format": "uri"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "method": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ResourceListOfWorkflow": {
+        "required": [
+          "values"
+        ],
+        "type": "object",
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Workflow"
+            }
+          },
+          "href": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Link"
+            },
+            "nullable": true
+          },
+          "nextPage": {
+            "type": "string",
+            "nullable": true
+          },
+          "previousPage": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LusidProblemDetails": {
+        "required": [
+          "code",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "errorDetails": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExecuteWorkflowRequest": {
+        "type": "object",
+        "properties": {
+          "context": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Any initial context to be associated with the workflow",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Workflow execution request"
+      },
+      "WorkflowActivitySummary": {
+        "type": "object",
+        "properties": {
+          "activityName": {
+            "type": "string",
+            "description": "Name of the Activity, for example WaitingForFileToReceive, WaitingForIssueToBeAssigned etc",
+            "nullable": true
+          },
+          "activityType": {
+            "type": "string",
+            "description": "Type of the Activity, for example Start/StopActivity, ReceiveSignalActivity, SendEmailActivity, ReceiveHttpRequestActivity etc",
+            "nullable": true
+          },
+          "activityExecutionStatus": {
+            "type": "string",
+            "description": "Activity's execution status",
+            "nullable": true
+          },
+          "startedAt": {
+            "type": "string",
+            "description": "Timestamp when activity execution began.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "finishedAt": {
+            "type": "string",
+            "description": "Timestamp when activity execution finished/faulted/cancelled.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "executionInfo": {
+            "type": "string",
+            "description": "Any info associated with the activity execution. Error message for example.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents summary of an activity/step in a workflow"
+      },
+      "WorkflowInstance": {
+        "type": "object",
+        "properties": {
+          "workflowCode": {
+            "type": "string",
+            "description": "Workflow Code",
+            "nullable": true
+          },
+          "workflowInstanceId": {
+            "type": "string",
+            "description": "Workflow Instance Id which is system generated",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "description": "Any info about the workflow state, i.e. transition between activities",
+            "nullable": true
+          },
+          "executionContext": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false
+            },
+            "description": "Data associated with a particular instance of the workflow",
+            "nullable": true
+          },
+          "startedAt": {
+            "type": "string",
+            "description": "Execution started at timestamp",
+            "format": "date-time"
+          },
+          "finishedAt": {
+            "type": "string",
+            "description": "Execution finished at timestamp. Null if the workflow isn't finished.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "lastStepExecutedAt": {
+            "type": "string",
+            "description": "Timestamp at which last activity/step in the workflow was executed. Null if the workflow is Idle.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "executionStatus": {
+            "type": "string",
+            "description": "Workflow execution status",
+            "nullable": true
+          },
+          "executionInfo": {
+            "type": "string",
+            "description": "Any info associated with the workflow execution. This would be an error message if ExecutionStatus is Faulted for example.",
+            "nullable": true
+          },
+          "nextActivity": {
+            "type": "string",
+            "description": "Name of the next step/activity in the workflow. Empty if the workflow has already finished execution.",
+            "nullable": true
+          },
+          "activities": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkflowActivitySummary"
+            },
+            "description": "Summary of all activities in the workflow instance. This would suggest which activities in the workflow has\r\nbeen executed or are pending.",
+            "nullable": true
+          },
+          "correlationId": {
+            "type": "string",
+            "description": "Id of any external entity associated with the workflow instance, otherwise system generated id",
+            "nullable": true
+          },
+          "allowedActions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Allowed actions if next activity in the workflow requires manual action, otherwise empty.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents an instance of a workflow"
+      },
+      "LusidValidationProblemDetails": {
+        "required": [
+          "code",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "errorDetails": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": false
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TransitWorkflowRequest": {
+        "required": [
+          "action"
+        ],
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "description": "Action to be passed to the workflow. A workflow may take a decision based on the action. For example,\r\nIssueWorkflow may wait for a Resolve action to close the workflow or UnAssign action to go back to previous state/step."
+          },
+          "context": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Any data to be added to the existing ExecutionContext of the workflow",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents a signal/action to be passed to the next blocking activity in the workflow"
+      },
+      "ResourceListOfWorkflowInstance": {
+        "required": [
+          "values"
+        ],
+        "type": "object",
+        "properties": {
+          "values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WorkflowInstance"
+            }
+          },
+          "href": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Link"
+            },
+            "nullable": true
+          },
+          "nextPage": {
+            "type": "string",
+            "nullable": true
+          },
+          "previousPage": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "oauth2": {
+        "type": "oauth2",
+        "description": "OAuth2 Implicit Grant",
+        "flows": {
+          "implicit": {
+            "authorizationUrl": "https://lusid.okta.com/oauth2/default/v1/authorize",
+            "scopes": { }
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    { }
+  ],
+  "tags": [
+    {
+      "name": "Workflows",
+      "description": "Workflows Endpoint to invoke workflows and retrieve workflow details"
+    }
+  ],
+  "x-tagGroups": {
+    "name": "API",
+    "tags": [
+      "Workflows"
+    ]
+  }
+}
