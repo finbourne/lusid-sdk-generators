@@ -2,3 +2,5 @@
 .idea/
 
 **/.*
+!.openapi-generator-ignore
+!.gitignore
