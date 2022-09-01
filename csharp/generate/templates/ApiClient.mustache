@@ -355,25 +355,28 @@ namespace {{packageName}}.Client
                 }
                 else
                 {
-                    if (options.HeaderParameters != null)
+                    if (options.HeaderParameters != null && options.HeaderParameters.TryGetValue("Content-Type", out var contentTypes))
                     {
-                        var contentTypes = options.HeaderParameters["Content-Type"];
-                        if (contentTypes == null || contentTypes.Any(header => header.Contains("application/json")))
+                        // TODO: Generated client user should add additional handlers. RestSharp only supports XML and JSON, with XML as default.
+                        if (contentTypes.Any(header => header.Contains("application/json")))
                         {
-                            request.RequestFormat = DataFormat.Json;
+                            request.AddJsonBody(options.Data);
+                        }
+                        else if (contentTypes.Any(header => header.Contains("text/plain")))
+                        {
+                            request.RequestFormat = DataFormat.None;
+                            request.AddParameter("text/plain", options.Data, ParameterType.RequestBody);
                         }
                         else
                         {
-                            // TODO: Generated client user should add additional handlers. RestSharp only supports XML and JSON, with XML as default.
+                            request.AddJsonBody(options.Data);
                         }
                     }
                     else
                     {
                         // Here, we'll assume JSON APIs are more common. XML can be forced by adding produces/consumes to openapi spec explicitly.
-                        request.RequestFormat = DataFormat.Json;
+                        request.AddJsonBody(options.Data);
                     }
-
-                    request.AddJsonBody(options.Data);
                 }
             }
 
