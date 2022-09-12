@@ -498,13 +498,20 @@ namespace {{packageName}}.Client
                 var success = policyResult.Outcome == OutcomeType.Successful;
                 if (success)
                 {
-                    if ((policyResult.Result.ContentType.Equals("text/csv") ||
-                        policyResult.Result.ContentType.Equals("text/plain")) && typeof(T) == typeof(string))
+                    if (!string.IsNullOrEmpty(contentType))
                     {
-                        // no deserialisation needs to take place
-                        response = policyResult.Result.ToAsyncResponse<T>();
-                        // this is essentially converting a string to a string
-                        response.Data = (T) Convert.ChangeType(policyResult.Result.Content, typeof(T));
+                        if ((contentType.Equals("text/csv") || contentType.Equals("text/plain")) 
+                            && typeof(T) == typeof(string))
+                        {
+                            // no deserialisation needs to take place
+                            response = (IRestResponse<T>) policyResult.Result;
+                            // this is essentially converting a string to a string
+                            response.Data = (T) Convert.ChangeType(policyResult.Result.Content, typeof(T));
+                        }
+                        else
+                        {
+                            response = client.Deserialize<T>(policyResult.Result);
+                        }
                     }
                     else
                     {
