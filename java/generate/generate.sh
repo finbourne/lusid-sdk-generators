@@ -34,9 +34,9 @@ shopt -s extglob
 echo "removing previous sdk"
 rm -rf $sdk_output_folder/docs
 rm -rf $sdk_output_folder/target
-rm -rf $sdk_output_folder/src/main/java/com/finbourne/lusid/!(utilities)
-rm -rf $sdk_output_folder/src/test/java/com/finbourne/lusid/api
-rm -rf $sdk_output_folder/src/test/java/com/finbourne/lusid/model
+rm -rf $sdk_output_folder/src/main/java/com/finbourne/?(*)/!(utilities)
+rm -rf $sdk_output_folder/src/test/java/com/finbourne/?(*)/api
+rm -rf $sdk_output_folder/src/test/java/com/finbourne/?(*)/model
 shopt -u extglob
 
 mkdir -p $sdk_output_folder
@@ -51,6 +51,7 @@ java -jar openapi-generator-cli.jar generate \
     --type-mappings Double=java.math.BigDecimal
 
 # remove redundant generated build files
+shopt -s extglob
 rm -f $sdk_output_folder/.openapi-generator-ignore
 rm -rf $sdk_output_folder/.openapi-generator/
 rm -rf $sdk_output_folder/gradle/
@@ -64,8 +65,9 @@ rm -f $sdk_output_folder/gradlew
 rm -f $sdk_output_folder/gradlew.bat
 rm -f $sdk_output_folder/settings.gradle
 rm -f $sdk_output_folder/src/main/AndroidManifest.xml
-rm -rf $sdk_output_folder/src/test/java/com/finbourne/lusid/api
-rm -rf $sdk_output_folder/src/test/java/com/finbourne/lusid/model
+rm -rf $sdk_output_folder/src/test/java/com/finbourne/?(*)/api
+rm -rf $sdk_output_folder/src/test/java/com/finbourne/?(*)/model
+shopt -u extglob
 
 # update pom version
 sdk_version=$(cat $swagger_file | jq -r '.info.version')
