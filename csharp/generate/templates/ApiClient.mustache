@@ -157,6 +157,39 @@ namespace {{packageName}}.Client
             set { throw new InvalidOperationException("Not allowed to set content type."); }
         }
     }
+
+    internal class TextDeserializer : RestSharp.Deserializers.IDeserializer
+    {
+        private readonly string _contentType;
+
+        public TextDeserializer(string contentType)
+        {
+            _contentType = contentType;
+        }
+
+        public T Deserialize<T>(IRestResponse response)
+        {
+            var result = (T)Deserialize(response, typeof(T));
+            return result;
+        }
+
+        internal object Deserialize(IRestResponse response, Type type)
+        {
+            if (type != typeof(string))
+            {
+                throw new ArgumentException("This deserializer can only be used to deserialize into strings");
+            }
+
+            return response.Content;
+        }
+
+        public string ContentType
+        {
+            get { return _contentType; }
+            set { throw new InvalidOperationException("Not allowed to set content type."); }
+        }
+    }
+
     {{! NOTE: Any changes related to RestSharp should be done in this class. All other client classes are for extensibility by consumers.}}
     /// <summary>
     /// Provides a default implementation of an Api client (both synchronous and asynchronous implementations),
@@ -465,6 +498,9 @@ namespace {{packageName}}.Client
                 client.AddHandler("*+json", () => customDeserializer);
             }
 
+            client.AddHandler("text/plain", () => new TextDeserializer("text/plain"));
+            client.AddHandler("text/csv", () => new TextDeserializer("text/csv"));
+
             var xmlDeserializer = new XmlDeserializer();
             client.AddHandler("application/xml", () => xmlDeserializer);
             client.AddHandler("text/xml", () => xmlDeserializer);
@@ -495,38 +531,11 @@ namespace {{packageName}}.Client
             {
                 var policy = RetryConfiguration.RetryPolicy;
                 var policyResult = policy.ExecuteAndCapture(() => client.Execute(req));
-                var success = policyResult.Outcome == OutcomeType.Successful;
-                var contentType = policyResult.Result?.ContentType;
-                if (success)
+                response = (policyResult.Outcome == OutcomeType.Successful) ? client.Deserialize<T>(policyResult.Result) : new RestResponse<T>
                 {
-                    if (!string.IsNullOrEmpty(contentType))
-                    {
-                        if ((contentType.Equals("text/csv") || contentType.Equals("text/plain")) 
-                            && typeof(T) == typeof(string))
-                        {
-                            // no deserialisation needs to take place
-                            response = (IRestResponse<T>) policyResult.Result;
-                            // this is essentially converting a string to a string
-                            response.Data = (T) Convert.ChangeType(policyResult.Result.Content, typeof(T));
-                        }
-                        else
-                        {
-                            response = client.Deserialize<T>(policyResult.Result);
-                        }
-                    }
-                    else
-                    {
-                        response = client.Deserialize<T>(policyResult.Result);
-                    }
-                }
-                else
-                {
-                    response = new RestResponse<T>()
-                    {
-                        Request = req,
-                        ErrorException = policyResult.FinalException
-                    };
-                }
+                    Request = req,
+                    ErrorException = policyResult.FinalException
+                };
             }
             else
             {
@@ -611,6 +620,9 @@ namespace {{packageName}}.Client
                 client.AddHandler("text/javascript", () => customDeserializer);
                 client.AddHandler("*+json", () => customDeserializer);
             }
+
+            client.AddHandler("text/plain", () => new TextDeserializer("text/plain"));
+            client.AddHandler("text/csv", () => new TextDeserializer("text/csv"));
 
             var xmlDeserializer = new XmlDeserializer();
             client.AddHandler("application/xml", () => xmlDeserializer);
