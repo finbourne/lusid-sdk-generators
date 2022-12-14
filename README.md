@@ -6,6 +6,9 @@ This repository contains the generation and publishing logic for each of the LUS
 - Javascript (Typescript)
 - CSharp
 
+## Contributing
+
+We welcome contributions from our community. See our [contributing guide](docs/CONTRIBUTING.md) for information on how to contribute to the LUSID SDK Generators repository.
 ## Generate
 
 If you would like to generate an SDK using a custom swagger.json file, please do the following:
