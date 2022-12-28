@@ -25,16 +25,7 @@ sdk_config=$4
 sdk_output_folder=$output_folder/sdk
 
 ignore_file_name=.openapi-generator-ignore
-
-if [[ -z $config_file_name || ! -f $gen_root/$config_file_name ]] ; then
-    echo "[INFO] '$config_file_name' not found, using default config.json"
-    config_file_name=config.json
-fi
-
-echo "[INFO] root generation : $gen_root"
-echo "[INFO] output folder   : $output_folder"
-echo "[INFO] swagger file    : $swagger_file"
-echo "[INFO] config file     : $config_file_name"
+config_file_name="${sdk_config:=config.json}"
 
 config_file=$gen_root/$config_file_name
 ignore_file=$output_folder/$ignore_file_name
