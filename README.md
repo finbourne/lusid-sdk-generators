@@ -42,9 +42,7 @@ If you would like to generate an SDK using a custom swagger.json file, please do
     ```
     sh build.sh java https://fbn-prd.lusid.com/api/swagger/v0/swagger.json ../../../lusid-sdk-java-preview
     ```
-    ```
-    ./build.sh java $(pwd)/lusid.json ../../../lusid-sdk-java-preview -c ../../java/generate/config-preview.json
-    ```
+./build.sh java $(pwd)/lusid.json ../../../lusid-sdk-java-preview -c ../../java/generate/config-preview.json
 
     or for other APIs:
 
