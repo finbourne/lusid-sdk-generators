@@ -37,6 +37,15 @@ If you would like to generate an SDK using a custom swagger.json file, please do
     sh build.sh csharp https://fbn-prd.lusid.com/api/swagger/v0/swagger.json ../../../lusid-sdk-csharp-preview
     ```
 
+    The generation configuration can be customised by adding a `-c` flag and full path to a config file. If no config parameter is supplied, the default `config.json` in the `<language>/generate/` is used. For example
+
+    ```
+    sh build.sh java https://fbn-prd.lusid.com/api/swagger/v0/swagger.json ../../../lusid-sdk-java-preview
+    ```
+    ```
+    ./build.sh java $(pwd)/lusid.json ../../../lusid-sdk-java-preview -c ../../java/generate/config-preview.json
+    ```
+
     or for other APIs:
 
     ```
