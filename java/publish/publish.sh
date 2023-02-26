@@ -31,7 +31,7 @@ EOF
 
 sdk_version=$(cat lusid.json | jq -r '.info.version')
 
-mvn -f sdk/pom.xml versions:set -DnewVersion=$sdk_version-SNAPSHOT
+mvn -f sdk/pom.xml versions:set -DnewVersion=$sdk_version
 mvn -f sdk/pom.xml -s sdk/settings.xml -P$server_id clean install deploy -Dmaven.test.skip=true
 
 rm -f publish.sh

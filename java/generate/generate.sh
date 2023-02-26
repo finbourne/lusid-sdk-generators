@@ -21,17 +21,26 @@ fi
 gen_root=$1
 output_folder=$2
 swagger_file=$output_folder/$3
-
+config_file_name=$4
 sdk_output_folder=$output_folder/sdk
 
+if [[ -z $config_file_name || ! -f $gen_root/$config_file_name ]] ; then
+    echo "[INFO] '$config_file_name' not found, using default config.json"
+    config_file_name=config.json
+fi
+
+echo "[INFO] root generation : $gen_root"
+echo "[INFO] output folder   : $output_folder"
+echo "[INFO] swagger file    : $swagger_file"
+echo "[INFO] config file     : $config_file_name"
+
 ignore_file_name=.openapi-generator-ignore
-config_file_name=config.json
 config_file=$gen_root/$config_file_name
 ignore_file=$output_folder/$ignore_file_name
 
 #   remove all previously generated files
 shopt -s extglob
-echo "removing previous sdk"
+echo "[INFO] removing previous sdk"
 rm -rf $sdk_output_folder/docs
 rm -rf $sdk_output_folder/target
 rm -rf $sdk_output_folder/src/main/java/com/finbourne/?(*)/!(utilities)
@@ -71,7 +80,7 @@ shopt -u extglob
 
 # update pom version
 sdk_version=$(cat $swagger_file | jq -r '.info.version')
-mvn -f $sdk_output_folder/pom.xml versions:set -DnewVersion=$sdk_version-SNAPSHOT
+mvn -f $sdk_output_folder/pom.xml versions:set -DnewVersion=$sdk_version
 rm -f $output_folder/.openapi-generator-ignore
 rm -f $sdk_output_folder/README.md
 rm -f $output_folder/api
