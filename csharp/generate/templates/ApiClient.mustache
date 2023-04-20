@@ -510,6 +510,7 @@ namespace {{packageName}}.Client
             client.AddHandler("*", () => xmlDeserializer);
 
             client.Timeout = configuration.Timeout;
+            client.ReadWriteTimeout = configuration.Timeout;
 
             if (configuration.Proxy != null)
             {
