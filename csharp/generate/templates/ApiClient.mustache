@@ -253,6 +253,10 @@ namespace {{packageName}}.Client
             if (string.IsNullOrEmpty(basePath))
                 throw new ArgumentException("basePath cannot be empty");
 
+            // set some default servicepoint params.
+            ServicePointManager.SetTcpKeepAlive(true, 90_000, 90_000);
+            ServicePointManager.UseNagleAlgorithm = false;
+        
             _baseUrl = basePath;
         }
 
