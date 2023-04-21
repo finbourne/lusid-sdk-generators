@@ -236,6 +236,10 @@ namespace {{packageName}}.Client
         /// </summary>
         public ApiClient()
         {
+            // set some default servicepoint params.
+            ServicePointManager.SetTcpKeepAlive(true, 90_000, 90_000);
+            ServicePointManager.UseNagleAlgorithm = false;
+        
             _baseUrl = {{packageName}}.Client.GlobalConfiguration.Instance.BasePath;
         }
 
@@ -479,6 +483,11 @@ namespace {{packageName}}.Client
         private ApiResponse<T> Exec<T>(RestRequest req, IReadableConfiguration configuration)
         {
             RestClient client = new RestClient(_baseUrl);
+            client.ConfigureWebRequest(hwr =>
+            {
+                hwr.ServicePoint.UseNagleAlgorithm = false;
+                hwr.ServicePoint.SetTcpKeepAlive(true, 90_000, 90_000);
+            });
 
             client.ClearHandlers();
             var existingDeserializer = req.JsonSerializer as IDeserializer;
@@ -603,6 +612,11 @@ namespace {{packageName}}.Client
         private async Task<ApiResponse<T>> ExecAsync<T>(RestRequest req, IReadableConfiguration configuration, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             RestClient client = new RestClient(_baseUrl);
+            client.ConfigureWebRequest(hwr =>
+            {
+                hwr.ServicePoint.UseNagleAlgorithm = false;
+                hwr.ServicePoint.SetTcpKeepAlive(true, 90_000, 90_000);
+            });
 
             client.ClearHandlers();
             var existingDeserializer = req.JsonSerializer as IDeserializer;
@@ -634,6 +648,7 @@ namespace {{packageName}}.Client
             client.AddHandler("*", () => xmlDeserializer);
 
             client.Timeout = configuration.Timeout;
+            client.ReadWriteTimeout = configuration.Timeout;
 
             if (configuration.Proxy != null)
             {
