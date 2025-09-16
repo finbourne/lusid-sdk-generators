@@ -1,4 +1,4 @@
-FROM maven:3.6.3-jdk-11 as maven
+FROM maven:3.9.6-eclipse-temurin-11 as maven
 
 RUN apt-get update && apt-get -y install jq && apt-get -y install git
 
